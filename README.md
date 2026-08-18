@@ -1,403 +1,259 @@
-# 🚑 GoldenHour EDS - Emergency Dispatch System
+# 🚑 GoldenHour EDS — Emergency Dispatch System
 
-> **Enterprise-Grade Emergency Response Management Platform**
->
-> A complete, production-ready emergency dispatch system built with modern web technologies, featuring real-time operations, multi-role dashboards, AI-powered routing, and enterprise-grade security.
+<p align="center">
+  <img src="./docs/assets/banner.svg" alt="GoldenHour EDS Hero Banner" width="100%">
+</p>
 
-![Status](https://img.shields.io/badge/status-production--ready-green?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
-![Node](https://img.shields.io/badge/node-v18%2B-brightgreen?style=flat-square)
-
-## ✨ Features
-
-### 🎯 Core Capabilities
-- **Multi-Role Portal System**: 6 distinct user roles with role-based access control
-- **Real-Time Operations Dashboard**: Live incident tracking and dispatch management
-- **AI-Powered Routing**: Intelligent ambulance-to-hospital matching with demand forecasting
-- **Hospital Integration**: Bed capacity management and patient intake coordination
-- **Citizen Emergency Reporting**: Public-facing emergency request interface
-- **Fleet Management**: Real-time ambulance tracking with GPS and status monitoring
-
-### 🔐 Security & Compliance
-- **JWT Authentication**: Secure token-based sessions with 8-hour expiration
-- **Role-Based Access Control (RBAC)**: 6 granular permission levels
-- **Content Security Policy**: Protection against XSS and injection attacks
-- **CORS Protection**: Configurable origin-based access control
-- **Bcrypt Password Hashing**: Industry-standard password encryption
-- **Input Validation**: Comprehensive payload validation on all endpoints
-- **Rate Limiting**: 120 requests/minute default with endpoint-specific overrides
-
-### ⚙️ Enterprise Architecture
-- **Microservices Pattern**: 7 independent service modules
-- **Real-Time WebSocket**: Live updates and instant notifications
-- **Redis Caching**: Distributed cache with graceful fallback
-- **Background Workers**: Asynchronous job queue system
-- **Database Abstraction**: SQLite development → PostgreSQL production ready
-- **Structured Logging**: JSON-formatted logs with audit trail
-- **Health Monitoring**: Ready/live probes for Kubernetes
-
-### 📊 Analytics & Insights
-- **AI Dispatch Readiness Scoring**: 0-99 scale incident prioritization
-- **Demand Forecasting**: Regional demand prediction by time of day
-- **Performance Metrics**: Response time, fleet utilization, compliance tracking
-- **Audit Logging**: Complete activity trail for regulatory compliance
+<p align="center">
+  <a href="https://aadil-mansuri0.github.io/goldenhour-eds/"><img src="https://img.shields.io/badge/LIVE%20DEMO-GoldenHour%20Interactive%20Console-brightgreen?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/Aadil-Mansuri0/goldenhour-eds/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Aadil-Mansuri0/goldenhour-eds/ci.yml?branch=main&label=CI%20Pipeline&style=for-the-badge&logo=githubactions&logoColor=white" alt="CI Status"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="License"></a>
+  <img src="https://img.shields.io/badge/Node.js-v18%2B%20%7C%20v20%2B-brightgreen?style=for-the-badge&logo=node.js&logoColor=white" alt="Node Version">
+  <img src="https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes">
+  <img src="https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+</p>
 
 ---
 
-## 🚀 Quick Start
+## 🌐 Live Interactive Demo
 
-### Prerequisites
-- **Node.js**: v18.0.0 or higher
-- **npm**: v9.0.0 or higher
-- **Git**: For version control
+Experience the full enterprise dispatch intelligence console directly in your browser with zero setup:
 
-### Installation
+### 🔗 **[Launch GoldenHour EDS Live Console](https://aadil-mansuri0.github.io/goldenhour-eds/)**
 
-```bash
-# Clone repository
-git clone https://github.com/Aadil-Mansuri0/goldenhour-eds.git
-cd goldenhour-eds
-
-# Install dependencies
-npm install
-
-# Copy environment file
-cp .env.example .env
-
-# Start development server
-npm start
-```
-
-Server runs on `http://localhost:3000/`
+| Portal / Module | Direct Live Access | Key Functionality |
+| :--- | :--- | :--- |
+| 🚨 **Command Center** | [Open Dispatcher Portal](https://aadil-mansuri0.github.io/goldenhour-eds/dispatcher-portal.html) | Live GPS incident map, automated ambulance dispatch & AI triage scoring |
+| 🏥 **Hospital Network** | [Open Hospital Portal](https://aadil-mansuri0.github.io/goldenhour-eds/hospital-portal.html) | Real-time trauma/ICU bed capacity tracking & intake triage |
+| 🚑 **Ambulance Telemetry** | [Open Ambulance Portal](https://aadil-mansuri0.github.io/goldenhour-eds/ambulance-portal.html) | GPS telemetry, crew readiness, battery/fuel, and route ETAs |
+| 👤 **Citizen Intake** | [Open Citizen Portal](https://aadil-mansuri0.github.io/goldenhour-eds/citizen-portal.html) | Public emergency reporting interface with instant triage feedback |
+| ⚙️ **Analytics & Admin** | [Open Admin Portal](https://aadil-mansuri0.github.io/goldenhour-eds/admin-portal.html) | System SLA compliance, fleet utilization, and audit logs |
+| 👑 **Super Admin Governance** | [Open SuperAdmin Portal](https://aadil-mansuri0.github.io/goldenhour-eds/superadmin-portal.html) | Regional dispatch management, cross-jurisdiction oversight |
 
 ---
 
 ## 📋 Demo Credentials
 
-Login at `http://localhost:3000/` with any of these roles:
+Login at `http://localhost:3000/` or the live portal with any role:
 
-| Role | Username | Password | Portal |
-|------|----------|----------|--------|
-| 🚨 **Dispatcher** | `dispatcher` | `goldenhour@123` | Command Center |
-| ⚙️ **Admin** | `admin` | `admin@golden` | Analytics & Audit |
-| 🏥 **Hospital** | `hospital` | `hospital@2026` | Bed Management |
-| 🚑 **Ambulance** | `ambulance` | `ambulance@123` | Fleet Tracking |
-| 👤 **Citizen** | `citizen` | `citizen@123` | Emergency Reporting |
-| 👑 **Super Admin** | `superadmin` | `superadmin@123` | System Governance |
+| Role | Username | Password | Default Portal |
+| :--- | :--- | :--- | :--- |
+| 🚨 **Dispatcher** | `dispatcher` | `goldenhour@123` | Command Center & Incident Routing |
+| ⚙️ **Admin** | `admin` | `admin@golden` | Performance Analytics & Audit Trail |
+| 🏥 **Hospital** | `hospital` | `hospital@2026` | Bed & Specialty Capacity Control |
+| 🚑 **Ambulance** | `ambulance` | `ambulance@123` | Fleet GPS & Patient Transport |
+| 👤 **Citizen** | `citizen` | `citizen@123` | Public Incident Intake |
+| 👑 **Super Admin** | `superadmin` | `superadmin@123` | Multi-Region Master Governance |
 
 ---
 
-## 📁 Project Structure
+## 🏛️ System Architecture
+
+<p align="center">
+  <img src="./docs/assets/architecture.svg" alt="System Topology and Data Flow" width="100%">
+</p>
+
+### 🔄 End-to-End Emergency Dispatch Sequence
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Citizen as 👤 Citizen / Caller
+    participant Gateway as 🛡️ API Gateway (Express)
+    participant AI as 🤖 AI Decision Engine
+    participant Redis as ⚡ Redis Cache & WSS
+    participant DB as 🗄️ Database (Postgres/SQLite)
+    actor Dispatcher as 🚨 Dispatcher
+    actor Hospital as 🏥 Hospital
+
+    Citizen->>Gateway: POST /api/incidents (Report Emergency)
+    Gateway->>AI: Compute AI Readiness & Triage Score (0-99)
+    AI-->>Gateway: Prioritized Incident + Target Hospital Matches
+    Gateway->>DB: Persist Incident Record & Audit Trail
+    Gateway->>Redis: Invalidate Cache & Broadcast Event
+    Redis-->>Dispatcher: WebSocket Real-time Incident Alert
+    Dispatcher->>Gateway: POST /api/dispatch (Assign Ambulance)
+    Gateway->>DB: Update Ambulance Status & Hospital Bed Reserve
+    Gateway->>Redis: Broadcast Dispatch Confirmation
+    Redis-->>Hospital: Inbound Patient Notification & Bed Hold
+```
+
+---
+
+## ✨ Features & Capabilities
+
+### 🎯 Real-Time Operational Intelligence
+- **Interactive Geospatial Map**: Live Leaflet/OpenStreetMap rendering of emergency incidents, ambulances, and hospital facilities.
+- **Dynamic Haversine Routing**: Algorithmic nearest-ambulance discovery and real-time road ETA estimation.
+- **AI Readiness Scoring (0-99)**: Automated urgency prioritization combining patient vitals, severity index, and traffic density.
+- **Demand Forecasting**: Hourly surge projection model to preemptively position fleet vehicles in high-risk zones.
+
+### 🔐 Security & Hardening
+- **JWT Authentication**: Token-based sessions with 8-hour cryptographic expiry.
+- **6-Tier RBAC Guard**: Granular permission matrix enforcing role boundaries on every endpoint.
+- **Defensive Headers**: Full Helmet configuration, Content Security Policy (CSP), and strict CORS origin validation.
+- **Sanitized XSS Defense**: Safe DOM rendering preventing client injection vectors.
+- **Rate Limiting**: Configurable sliding-window rate limiters per IP.
+
+### ⚡ Production Architecture
+- **Distributed Caching**: Redis cache layer with sub-millisecond response and in-memory TTL fallback.
+- **Real-Time WebSocket Bus**: Bi-directional event broadcasting for zero-latency operator synchronization.
+- **Dual Database Support**: SQLite for rapid local development and PostgreSQL for enterprise scale.
+- **Structured Audit Logging**: JSON-formatted immutable audit trails tracking all dispatch decisions.
+
+---
+
+## 📁 Repository Structure
 
 ```
 goldenhour-eds/
-├── public/                          # Frontend applications
-│   ├── login.html                   # Multi-role authentication portal
-│   ├── dispatcher-portal.html        # Command center with live map
-│   ├── hospital-portal.html          # Bed capacity management
-│   ├── ambulance-portal.html         # Fleet GPS tracking
-│   ├── admin-portal.html             # Analytics & user management
-│   ├── citizen-portal.html           # Emergency intake form
-│   ├── superadmin-portal.html        # Regional oversight
-│   ├── app.js                        # Shared frontend utilities
-│   └── styles.css                    # Global styling
-│
-├── src/
-│   ├── server.js                     # Express API server (main entry)
-│   ├── auth.js                       # JWT + RBAC implementation (6 roles)
-│   ├── database.js                   # SQLite schema with indexes
-│   ├── config.js                     # Environment configuration
-│   ├── logger.js                     # Structured JSON logging
-│   │
-│   ├── services/
-│   │   ├── dispatchService.js        # Hospital matching, ETA calculation
-│   │   ├── aiService.js              # Readiness scoring, demand forecast
-│   │   ├── routingService.js         # Multi-provider routing abstraction
-│   │   ├── redisService.js           # Distributed caching layer
-│   │   ├── cacheService.js           # In-memory TTL cache
-│   │   ├── websocketService.js       # Real-time broadcast integration
-│   │   └── workerService.js          # Background job queue
-│   │
-│   ├── middleware/
-│   │   └── errorHandler.js           # Centralized error handling
-│   │
-│   └── portal/
-│       └── roles.js                  # Role definitions & permissions
-│
-├── tests/
-│   └── api.test.js                   # Integration test suite
-│
-├── scripts/
-│   ├── migrate.js                    # Database initialization
-│   └── seed.js                       # Demo data verification
-│
-├── k8s/                              # Kubernetes manifests
-│   ├── namespace.yaml
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── ingress.yaml
-│   └── hpa.yaml
-│
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                    # GitHub Actions CI/CD pipeline
-│
-├── Dockerfile                        # Production container image
-├── docker-compose.yml                # Local development stack
-├── package.json                      # Dependencies & scripts
-├── .env.example                      # Environment template
-└── docs/                             # Comprehensive documentation
+│       ├── ci.yml                    # Automated Test & Health Check CI Pipeline
+│       └── deploy-pages.yml          # Automated GitHub Pages Live Demo Deployment
+├── docs/
+│   ├── assets/
+│   │   ├── banner.svg                # High-resolution Hero Banner
+│   │   └── architecture.svg          # System Topology SVG Diagram
+│   ├── api.md                        # Complete REST API Reference
+│   ├── architecture.md               # Technical Deep-Dive
+│   ├── deployment.md                 # Production Cloud & On-Prem Guide
+│   ├── er-diagram.md                 # Database Entity Relationship Model
+│   └── portal-guide.md               # Multi-Portal Operator Manual
+├── k8s/                              # Kubernetes Manifests (Namespace, HPA, Ingress)
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── configmap.yaml
+│   └── secret.yaml
+├── public/                           # Frontend Applications & Live Demos
+│   ├── index.html                    # Interactive Dispatch Intelligence Console
+│   ├── dispatcher-portal.html        # Command Center Dashboard
+│   ├── hospital-portal.html          # Hospital Capacity Management
+│   ├── ambulance-portal.html         # Ambulance Fleet Telemetry
+│   ├── citizen-portal.html           # Emergency Reporting Interface
+│   ├── admin-portal.html             # Analytics & Audit Trail
+│   ├── superadmin-portal.html        # Regional Oversight
+│   ├── app.js                        # Client API & Mapping Utilities
+│   └── styles.css                    # Shared Design System
+├── src/
+│   ├── server.js                     # Express API Server & WebSocket Hub
+│   ├── auth.js                       # JWT & RBAC Engine (6 Roles)
+│   ├── database.js                   # Schema Initialization & Query Helpers
+│   ├── config.js                     # Centralized Environment Config
+│   ├── logger.js                     # Structured JSON Logger
+│   ├── middleware/                   # Error & Security Middlewares
+│   └── services/
+│       ├── aiService.js              # Readiness Scoring & Predictive Demand
+│       ├── dispatchService.js        # Ambulance-Hospital Matching & ETAs
+│       ├── redisService.js           # Distributed Cache Service
+│       ├── routingService.js         # Multi-Provider Routing Abstraction
+│       └── websocketService.js       # Real-Time Broadcast Integration
+├── tests/
+│   ├── unit/                         # Unit Tests for Services & Auth
+│   └── integration/                  # End-to-End API Route Tests
+├── Dockerfile                        # Multi-Stage Production Container
+├── docker-compose.yml                # Local Dev Stack (App + Redis + DB)
+├── package.json                      # Project Dependencies & Scripts
+└── README.md                         # Project Documentation
 ```
 
 ---
 
-## 🔌 API Endpoints
+## 🚀 Quick Start (Local Setup)
 
-### Authentication
-- `POST /api/login` - User authentication with JWT token
+### Prerequisites
+- **Node.js**: `v18.0.0` or higher
+- **npm**: `v9.0.0` or higher
+- **Git**: For version control
 
-### Data Access
-- `GET /api/health` - Health check with metrics
-- `GET /api/ready` - Kubernetes readiness probe
-- `GET /api/verify-token` - Token validation and role verification
-- `GET /api/dashboard` - Complete dashboard data (cached)
-- `GET /api/incidents` - List all incidents
-- `GET /api/ambulances` - List all ambulances
-- `GET /api/hospitals` - List all hospitals
+### 1. Clone & Install
+```bash
+git clone https://github.com/Aadil-Mansuri0/goldenhour-eds.git
+cd goldenhour-eds
+npm install
+```
 
-### Operations
-- `POST /api/incidents` - Create new incident (requires dispatcher/admin)
-- `POST /api/dispatch` - Dispatch ambulance to hospital (requires dispatcher/admin)
+### 2. Configure Environment
+```bash
+cp .env.example .env
+```
 
-See [full API documentation](./docs/api.md)
-
----
-
-## 🛠️ Development
-
-### Run Tests
+### 3. Run Test Suite
 ```bash
 npm test
 ```
 
-Expected output:
-```
-✔ health endpoint responds successfully
-✔ readiness endpoint returns ready status
-✔ dashboard endpoint provides dispatch data
-✔ incident creation requires auth
-✔ incident creation succeeds with valid dispatcher auth
-
-ℹ tests 5 | pass 5 | fail 0
-```
-
-### Run Development Server with Auto-Reload
+### 4. Start Server
 ```bash
-npm run dev
+npm start
 ```
-
-### Linting
-```bash
-npm run lint
-```
-
-### Database Management
-```bash
-# Initialize/migrate database
-npm run migrate
-
-# Verify seed data
-npm run seed
-```
+Visit **`http://localhost:3000/`** to view the live dashboard.
 
 ---
 
 ## 🐳 Docker Deployment
 
-### Local Development with Docker Compose
+Run the complete production stack (Node.js app + Redis + PostgreSQL) in one command:
+
 ```bash
 docker-compose up --build
 ```
 
-Includes:
-- Node.js application (port 3000)
-- Redis cache (port 6379)
-- PostgreSQL database (port 5432)
-
-### Production Container Build
+Build standalone container image:
 ```bash
 docker build -t goldenhour-eds:latest .
-docker run -p 3000:3000 \
-  -e NODE_ENV=production \
-  -e JWT_SECRET=your-secret \
-  goldenhour-eds:latest
+docker run -p 3000:3000 -e NODE_ENV=production goldenhour-eds:latest
 ```
 
 ---
 
 ## ☸️ Kubernetes Deployment
 
-### Prerequisites
-- Kubernetes cluster (1.20+)
-- kubectl configured
-- Container registry access
+Deploy to any Kubernetes cluster (EKS, GKE, AKS, minikube):
 
-### Deploy
 ```bash
-# Create namespace
+# Apply all Kubernetes manifests
 kubectl apply -f k8s/namespace.yaml
-
-# Deploy all resources
 kubectl apply -f k8s/
 
-# Verify deployment
+# Verify running pods
 kubectl get pods -n goldenhour
 ```
 
-### Horizontal Auto-Scaling
-Automatically scales between 2-6 pods based on CPU utilization.
-
 ---
 
-## 🔐 Security Features ✅
+## 🧪 Test Verification
 
-### Fixed in Latest Release
-- ✅ **CORS Protection**: Origin whitelist validation (not open to all)
-- ✅ **Content Security Policy**: Enabled with proper directives
-- ✅ **XSS Prevention**: All user data sanitized with textContent (not innerHTML)
-- ✅ **Complete Authentication**: All 6 demo users now defined and working
-- ✅ **WebSocket Integration**: Real-time broadcast connected and functional
-- ✅ **Redis Service**: Initialization and connection working
-- ✅ **Backend Role Verification**: /api/verify-token endpoint added
-- ✅ **Database Indexes**: Performance optimization on status, region columns
+The project includes an automated unit and integration test suite executing 17 comprehensive checks across authentication, routing, AI scoring, caching, and REST endpoints:
 
-### Standard Features
-- JWT token-based authentication
-- Role-based access control (6 roles)
-- Session management with 8-hour expiration
-- Bcrypt password hashing (10 salt rounds)
-- Input validation on all endpoints
-- SQL injection prevention (parameterized queries)
-- Rate limiting (120 req/min per IP)
-- Helmet security headers
+```bash
+npm test
+```
 
----
+```text
+✔ GET /api/health returns 200 ok
+✔ GET /api/ready returns 200 ready
+✔ GET /api/verify-token verifies authenticated user
+✔ GET /api/dashboard returns complete operational summary
+✔ POST /api/incidents creates incident and logs audit
+✔ POST /api/dispatch executes automated dispatch decision
+✔ PATCH /api/hospitals/:id updates bed availability
+✔ GET /api/audit-logs returns list of system events
+✔ GET /api/metrics returns system performance SLAs
+✔ dispatchService: getDistanceKm returns valid distance
+✔ dispatchService: estimateEtaKm returns positive minutes
+✔ dispatchService: normalizeSeverity handles various inputs
+✔ aiService: scoreDispatchReadiness returns score bounded below 100
+✔ aiService: forecastDemand returns integer percent
+✔ routingService: buildRoute generates route payload
+✔ auth: verifyPassword authenticates valid demo users
+✔ auth: signToken produces JWT string
 
-## 📊 Database Schema
-
-### incidents
-- id (TEXT, PRIMARY KEY)
-- title, type, severity, status, location
-- latitude, longitude, region
-- patient_count, eta_minutes
-- created_at, updated_at
-
-### ambulances
-- id (TEXT, PRIMARY KEY)
-- vehicle_number, type (ALS/BLS)
-- status (available/en-route/dispatched)
-- latitude, longitude, region
-- battery (0-100), crew_count
-- last_updated
-
-### hospitals
-- id (TEXT, PRIMARY KEY)
-- name, type (public/private)
-- latitude, longitude, region
-- capacity, available_beds
-- trauma_level, specialty
-
-**Indexes**: status, region, created_at
-
----
-
-## 🚀 What's New (Latest Release)
-
-### Critical Security Fixes ✅
-1. **CORS Hardened** - Only allows configured origins
-2. **CSP Enabled** - Protection against XSS attacks
-3. **XSS Fixed** - All portals use textContent for user data
-4. **Auth Complete** - All 6 roles now authenticated
-5. **WebSocket Live** - Real-time dispatch updates
-6. **Redis Ready** - Caching service initialized
-7. **Role Verification** - Backend endpoint validates permissions
-8. **DB Optimized** - Indexes on key columns
-
-### New Endpoints
-- `GET /api/verify-token` - Verify user role on server
-- WebSocket events for real-time dispatch updates
-
-### Environment Updates
-- `ALLOWED_ORIGINS` - Configure trusted domains
-- `JWT_SECRET` - Customizable signing key
-- All 6 demo password overrides via env vars
-
----
-
-## 📈 Performance
-
-- **Cache Strategy**: 30s TTL for dashboard, Redis distributed cache
-- **Query Optimization**: Database indexes, parameterized queries
-- **Asset Optimization**: Minified CSS/JS, lazy loading
-- **Monitoring**: Health endpoints, structured logging
-
----
-
-## 🔄 CI/CD Pipeline
-
-GitHub Actions automatically:
-1. ✅ Runs test suite on every push
-2. ✅ Lints code with ESLint
-3. ✅ Builds Docker image
-4. ✅ Pushes to registry (if configured)
-
----
-
-## 📖 Documentation
-
-- [API Reference](./docs/api.md)
-- [Deployment Guide](./docs/deployment.md)
-- [Architecture](./docs/architecture.md)
-- [Database Schema](./docs/er-diagram.md)
-- [Portal Guide](./docs/portal-guide.md)
-
----
-
-## 📋 Production Readiness Checklist
-
-- ✅ Security hardened (CORS, CSP, XSS, auth)
-- ✅ All 6 roles working end-to-end
-- ✅ Real-time WebSocket integrated
-- ✅ Redis caching enabled
-- ✅ Database indexes added
-- ✅ Role verification on backend
-- ✅ Structured logging
-- ✅ Health/ready probes
-- ✅ Docker containerization
-- ✅ Kubernetes manifests
-- ✅ CI/CD pipeline
-- ✅ Comprehensive documentation
-- ✅ Integration tests (5/5 passing)
-
----
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+ℹ tests 17 | pass 17 | fail 0
+```
 
 ---
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
-
----
-
-**Ready to get started?**
-
-```bash
-npm install && npm start
-# Visit http://localhost:3000/
-```
-
-**For production deployment**, see [Deployment Guide](./docs/deployment.md).
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

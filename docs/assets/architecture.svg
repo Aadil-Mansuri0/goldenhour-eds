@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" width="100%" height="100%" style="background:#0f172a;border-radius:14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <defs>
+    <linearGradient id="boxGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accentRed" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f87171"/>
+    </linearGradient>
+    <linearGradient id="accentBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="accentGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="accentPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Title -->
+  <text x="40" y="45" font-size="22" font-weight="800" fill="#ffffff">SYSTEM TOPOLOGY &amp; DATA FLOW ARCHITECTURE</text>
+  <text x="40" y="70" font-size="13" font-weight="400" fill="#94a3b8">Real-time bi-directional pipeline from citizen dispatch intake to hospital bed reservation</text>
+
+  <!-- Layer 1: Client / Portals -->
+  <g transform="translate(40, 100)">
+    <rect width="210" height="340" rx="10" fill="url(#boxGrad1)" stroke="#334155" stroke-width="1.5"/>
+    <rect width="210" height="4" rx="2" fill="url(#accentBlue)"/>
+    <text x="20" y="32" font-size="14" font-weight="700" fill="#60a5fa">1. CLIENT LAYER</text>
+    
+    <rect x="15" y="55" width="180" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="80" font-size="12" font-weight="600" fill="#f1f5f9">🚨 Dispatcher Portal</text>
+    
+    <rect x="15" y="105" width="180" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="130" font-size="12" font-weight="600" fill="#f1f5f9">🏥 Hospital Bed Portal</text>
+    
+    <rect x="15" y="155" width="180" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="180" font-size="12" font-weight="600" fill="#f1f5f9">🚑 Ambulance GPS Telemetry</text>
+
+    <rect x="15" y="205" width="180" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="230" font-size="12" font-weight="600" fill="#f1f5f9">👤 Citizen Emergency Intake</text>
+
+    <rect x="15" y="255" width="180" height="40" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="280" font-size="12" font-weight="600" fill="#f1f5f9">⚙️ Admin / SuperAdmin</text>
+  </g>
+
+  <!-- Connectors 1 -> 2 -->
+  <path d="M 250 200 L 320 200" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4,4"/>
+  <polygon points="320,196 328,200 320,204" fill="#38bdf8"/>
+  <text x="255" y="190" font-size="10" font-weight="600" fill="#38bdf8">REST / WSS</text>
+
+  <!-- Layer 2: API Gateway & Security -->
+  <g transform="translate(330, 100)">
+    <rect width="210" height="340" rx="10" fill="url(#boxGrad1)" stroke="#334155" stroke-width="1.5"/>
+    <rect width="210" height="4" rx="2" fill="url(#accentRed)"/>
+    <text x="20" y="32" font-size="14" font-weight="700" fill="#f87171">2. API &amp; SECURITY</text>
+    
+    <rect x="15" y="55" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="77" font-size="12" font-weight="600" fill="#f1f5f9">Express 5.x API</text>
+    <text x="25" y="93" font-size="10" fill="#94a3b8">Helmet + Rate Limiting</text>
+
+    <rect x="15" y="115" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="137" font-size="12" font-weight="600" fill="#f1f5f9">JWT &amp; RBAC Guard</text>
+    <text x="25" y="153" font-size="10" fill="#94a3b8">6-Tier Permission Matrix</text>
+
+    <rect x="15" y="175" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="197" font-size="12" font-weight="600" fill="#f1f5f9">CORS &amp; CSP Policy</text>
+    <text x="25" y="213" font-size="10" fill="#94a3b8">Sanitized XSS Defense</text>
+
+    <rect x="15" y="235" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="257" font-size="12" font-weight="600" fill="#f1f5f9">WebSocket Hub (ws)</text>
+    <text x="25" y="273" font-size="10" fill="#94a3b8">Live Broadcast Bus</text>
+  </g>
+
+  <!-- Connectors 2 -> 3 -->
+  <path d="M 540 200 L 600 200" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4,4"/>
+  <polygon points="600,196 608,200 600,204" fill="#a78bfa"/>
+  <text x="546" y="190" font-size="10" font-weight="600" fill="#a78bfa">Internal</text>
+
+  <!-- Layer 3: Microservices & AI Engine -->
+  <g transform="translate(610, 100)">
+    <rect width="210" height="340" rx="10" fill="url(#boxGrad1)" stroke="#334155" stroke-width="1.5"/>
+    <rect width="210" height="4" rx="2" fill="url(#accentPurple)"/>
+    <text x="20" y="32" font-size="14" font-weight="700" fill="#a78bfa">3. CORE SERVICES &amp; AI</text>
+    
+    <rect x="15" y="55" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="77" font-size="12" font-weight="600" fill="#f1f5f9">Dispatch Decision Engine</text>
+    <text x="25" y="93" font-size="10" fill="#94a3b8">Haversine &amp; ETA Matching</text>
+
+    <rect x="15" y="115" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="137" font-size="12" font-weight="600" fill="#f1f5f9">AI Readiness Scorer</text>
+    <text x="25" y="153" font-size="10" fill="#94a3b8">0-99 Dynamic Prioritizer</text>
+
+    <rect x="15" y="175" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="197" font-size="12" font-weight="600" fill="#f1f5f9">Demand Forecaster</text>
+    <text x="25" y="213" font-size="10" fill="#94a3b8">Time-of-day surge model</text>
+
+    <rect x="15" y="235" width="180" height="50" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="257" font-size="12" font-weight="600" fill="#f1f5f9">Background Worker</text>
+    <text x="25" y="273" font-size="10" fill="#94a3b8">Async audit &amp; cleanups</text>
+  </g>
+
+  <!-- Connectors 3 -> 4 -->
+  <path d="M 820 200 L 870 200" stroke="#34d399" stroke-width="2" stroke-dasharray="4,4"/>
+  <polygon points="870,196 878,200 870,204" fill="#34d399"/>
+  <text x="826" y="190" font-size="10" font-weight="600" fill="#34d399">Persistence</text>
+
+  <!-- Layer 4: Storage & Infrastructure -->
+  <g transform="translate(880, 100)">
+    <rect width="180" height="340" rx="10" fill="url(#boxGrad1)" stroke="#334155" stroke-width="1.5"/>
+    <rect width="180" height="4" rx="2" fill="url(#accentGreen)"/>
+    <text x="20" y="32" font-size="14" font-weight="700" fill="#34d399">4. DATA &amp; INFRA</text>
+    
+    <rect x="15" y="55" width="150" height="60" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="80" font-size="12" font-weight="600" fill="#f1f5f9">Redis Cluster</text>
+    <text x="25" y="96" font-size="10" fill="#94a3b8">Sub-ms cache layer</text>
+
+    <rect x="15" y="125" width="150" height="60" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="150" font-size="12" font-weight="600" fill="#f1f5f9">PostgreSQL / SQLite</text>
+    <text x="25" y="166" font-size="10" fill="#94a3b8">Indexed relational store</text>
+
+    <rect x="15" y="195" width="150" height="60" rx="6" fill="#1e293b" stroke="#475569"/>
+    <text x="25" y="220" font-size="12" font-weight="600" fill="#f1f5f9">Kubernetes HPA</text>
+    <text x="25" y="236" font-size="10" fill="#94a3b8">Auto-scaling 2-6 Pods</text>
+  </g>
+</svg>
