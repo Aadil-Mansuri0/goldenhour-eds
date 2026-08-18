@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goldenhour-app
+  namespace: goldenhour
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: goldenhour-app
+  template:
+    metadata:
+      labels:
+        app: goldenhour-app
+    spec:
+      containers:
+        - name: goldenhour-app
+          image: goldenhour-eds:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: goldenhour-config
+            - secretRef:
+                name: goldenhour-secret
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goldenhour-service
+  namespace: goldenhour
+spec:
+  selector:
+    app: goldenhour-app
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: goldenhour-hpa
+  namespace: goldenhour
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: goldenhour-app
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

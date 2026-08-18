@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoldenHour EDS - Enterprise Login</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      }
+
+      .login-shell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 20px;
+        padding: 48px 36px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+      }
+
+      .brand-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .brand-mark {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+
+      .brand-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #e2e8f0;
+        margin-bottom: 4px;
+      }
+
+      .brand-title span {
+        color: #ef4444;
+      }
+
+      .brand-subtitle {
+        font-size: 12px;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        font-weight: 600;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #cbd5e1;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+        color: #e2e8f0;
+        font-size: 14px;
+        transition: all 0.2s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #ef4444;
+        background: rgba(30, 41, 59, 1);
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      }
+
+      input::placeholder {
+        color: #64748b;
+      }
+
+      .role-selector {
+        margin-bottom: 24px;
+      }
+
+      .role-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .role-option {
+        padding: 12px 16px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 2px solid rgba(148, 163, 184, 0.2);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: center;
+        font-weight: 600;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .role-option:hover {
+        border-color: rgba(148, 163, 184, 0.4);
+        background: rgba(30, 41, 59, 1);
+      }
+
+      .role-option.active {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 12px 18px;
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+      }
+
+      .btn-login:active {
+        transform: translateY(0);
+      }
+
+      .demo-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .demo-label {
+        font-size: 11px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .demo-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .demo-card {
+        padding: 10px 12px;
+        background: rgba(30, 41, 59, 0.4);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .demo-card:hover {
+        border-color: rgba(148, 163, 184, 0.3);
+        background: rgba(30, 41, 59, 0.6);
+      }
+
+      .demo-role {
+        font-size: 11px;
+        font-weight: 700;
+        color: #cbd5e1;
+      }
+
+      .demo-cred {
+        font-size: 10px;
+        color: #64748b;
+        margin-top: 4px;
+      }
+
+      .error-message {
+        padding: 10px 12px;
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        border-radius: 8px;
+        color: #fca5a5;
+        font-size: 12px;
+        margin-bottom: 16px;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12px;
+      }
+
+      .loading.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-shell">
+      <div class="login-container">
+        <div class="brand-header">
+          <div class="brand-mark">🚑</div>
+          <div class="brand-title">Golden<span>Hour</span> EDS</div>
+          <div class="brand-subtitle">Emergency Dispatch System</div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="role-selector">
+            <label>Select Your Role</label>
+            <div class="role-grid">
+              <div class="role-option active" data-role="dispatcher">🚨 Dispatcher</div>
+              <div class="role-option" data-role="admin">⚙️ Admin</div>
+              <div class="role-option" data-role="hospital">🏥 Hospital</div>
+              <div class="role-option" data-role="ambulance">🚑 Ambulance</div>
+              <div class="role-option" data-role="citizen">👤 Citizen</div>
+              <div class="role-option" data-role="super_admin">👑 Super Admin</div>
+            </div>
+          </div>
+
+          <input type="hidden" id="selectedRole" value="dispatcher" />
+
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" required />
+          </div>
+
+          <button type="submit" class="btn-login">Sign In</button>
+
+          <div id="loading" class="loading">Authenticating...</div>
+        </form>
+
+        <div class="demo-section">
+          <div class="demo-label">📋 Demo Credentials</div>
+          <div class="demo-group">
+            <div class="demo-card" onclick="setDemo('dispatcher', 'goldenhour@123')">
+              <div class="demo-role">Dispatcher</div>
+              <div class="demo-cred">dispatcher</div>
+            </div>
+            <div class="demo-card" onclick="setDemo('admin', 'admin@golden')">
+              <div class="demo-role">Admin</div>
+              <div class="demo-cred">admin</div>
+            </div>
+          </div>
+          <div class="demo-group">
+            <div class="demo-card" onclick="setDemo('hospital', 'hospital@2026')">
+              <div class="demo-role">Hospital</div>
+              <div class="demo-cred">hospital</div>
+            </div>
+            <div class="demo-card" onclick="setDemo('super_admin', 'superadmin@123')">
+              <div class="demo-role">Super Admin</div>
+              <div class="demo-cred">superadmin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const roleOptions = document.querySelectorAll('.role-option');
+      const selectedRoleInput = document.getElementById('selectedRole');
+
+      roleOptions.forEach((option) => {
+        option.addEventListener('click', () => {
+          roleOptions.forEach((o) => o.classList.remove('active'));
+          option.classList.add('active');
+          selectedRoleInput.value = option.dataset.role;
+        });
+      });
+
+      function setDemo(role, password) {
+        const form = document.getElementById('loginForm');
+        document.getElementById('username').value = role;
+        document.getElementById('password').value = password;
+        selectedRoleInput.value = role;
+        roleOptions.forEach((o) => {
+          o.classList.remove('active');
+          if (o.dataset.role === role) {
+            o.classList.add('active');
+          }
+        });
+      }
+
+      async function handleLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('selectedRole').value;
+        const errorMsg = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+
+        errorMsg.classList.remove('show');
+        loading.classList.add('show');
+
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+
+          const data = await response.json();
+
+          if (!response.ok || !data.success) {
+            throw new Error(data.error || 'Login failed');
+          }
+
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.user.role);
+          localStorage.setItem('username', data.user.username);
+
+          const portalMap = {
+            dispatcher: '/dispatcher-portal.html',
+            admin: '/admin-portal.html',
+            hospital: '/hospital-portal.html',
+            ambulance: '/ambulance-portal.html',
+            citizen: '/citizen-portal.html',
+            super_admin: '/superadmin-portal.html'
+          };
+
+          window.location.href = portalMap[data.user.role] || '/index.html';
+        } catch (error) {
+          errorMsg.textContent = error.message;
+          errorMsg.classList.add('show');
+        } finally {
+          loading.classList.remove('show');
+        }
+      }
+    </script>
+  </body>
+</html>

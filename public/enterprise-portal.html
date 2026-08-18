@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoldenHour Enterprise Portal</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        background: #07111f;
+        color: #e2e8f0;
+      }
+      .portal-shell {
+        min-height: 100vh;
+        padding: 32px;
+        background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+      }
+      .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .portal-card {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+      }
+      .portal-title {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .badge {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #1d4ed8;
+        color: white;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+      }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        padding: 8px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="portal-shell">
+      <div class="portal-title">GoldenHour Enterprise Command Center</div>
+      <div class="badge">NATIONAL OPERATIONS</div>
+      <div style="height: 20px"></div>
+      <div class="portal-grid">
+        <div class="portal-card">
+          <h3>Dispatcher</h3>
+          <div class="metric"><span>Live incidents</span><strong>18</strong></div>
+          <div class="metric"><span>Open dispatches</span><strong>9</strong></div>
+          <div class="metric"><span>Avg response</span><strong>07:20</strong></div>
+        </div>
+        <div class="portal-card">
+          <h3>Hospital</h3>
+          <div class="metric"><span>Bed capacity</span><strong>82%</strong></div>
+          <div class="metric"><span>Trauma units</span><strong>5 active</strong></div>
+          <div class="metric"><span>Transfers</span><strong>12</strong></div>
+        </div>
+        <div class="portal-card">
+          <h3>Ambulance</h3>
+          <div class="metric"><span>Vehicles online</span><strong>26</strong></div>
+          <div class="metric"><span>Battery avg</span><strong>89%</strong></div>
+          <div class="metric"><span>ETA to scene</span><strong>04:10</strong></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

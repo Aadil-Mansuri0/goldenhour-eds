@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goldenhour-ingress
+  namespace: goldenhour
+spec:
+  rules:
+    - host: goldenhour.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: goldenhour-service
+                port:
+                  number: 80

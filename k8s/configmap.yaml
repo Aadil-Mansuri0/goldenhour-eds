@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goldenhour-config
+  namespace: goldenhour
+data:
+  APP_NAME: GoldenHour EDS
+  NODE_ENV: production
+  PORT: '3000'
+  LOG_LEVEL: info
+  DB_PATH: ./data/goldenhour.db

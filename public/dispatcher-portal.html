@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dispatcher Command Center - GoldenHour</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        background: rgba(15, 23, 42, 0.95);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        backdrop-filter: blur(8px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-title { font-size: 18px; font-weight: 800; }
+      .brand-title span { color: #ef4444; }
+      .badge { 
+        padding: 6px 12px; 
+        background: rgba(239, 68, 68, 0.1); 
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 999px; 
+        font-size: 10px;
+        font-weight: 700;
+        color: #fca5a5;
+        text-transform: uppercase;
+      }
+      .toolbar { display: flex; gap: 12px; }
+      .btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .btn-logout {
+        background: rgba(239, 68, 68, 0.2);
+        color: #fca5a5;
+      }
+      .btn-logout:hover {
+        background: rgba(239, 68, 68, 0.3);
+      }
+      .dashboard {
+        display: grid;
+        grid-template-columns: 300px 1fr 350px;
+        min-height: calc(100vh - 65px);
+      }
+      .panel {
+        background: rgba(15, 23, 42, 0.8);
+        border-right: 1px solid rgba(148, 163, 184, 0.1);
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .panel.right {
+        border-right: none;
+        border-left: 1px solid rgba(148, 163, 184, 0.1);
+      }
+      .panel-title {
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.4px;
+        color: #64748b;
+        margin-bottom: 12px;
+      }
+      .incident-card {
+        padding: 12px;
+        background: rgba(30, 41, 59, 0.8);
+        border-left: 4px solid #ef4444;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .incident-card:hover {
+        background: rgba(30, 41, 59, 1);
+        transform: translateX(4px);
+      }
+      .incident-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+      .incident-meta { font-size: 11px; color: #94a3b8; }
+      #map {
+        width: 100%;
+        height: 100%;
+        background: #0f172a;
+      }
+      .map-controls {
+        display: flex;
+        gap: 8px;
+        padding: 16px;
+      }
+      .stat-card {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.1);
+        border-radius: 8px;
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+      .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; }
+      .stat-value { font-size: 20px; font-weight: 800; margin-top: 4px; }
+      @media (max-width: 1200px) {
+        .dashboard { grid-template-columns: 1fr; }
+        .panel { border-right: none; border-bottom: 1px solid rgba(148, 163, 184, 0.1); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="brand">
+        <div style="font-size: 24px;">🚨</div>
+        <div>
+          <div class="brand-title">Golden<span>Hour</span> Dispatch</div>
+        </div>
+      </div>
+      <div class="badge">LIVE OPERATIONS</div>
+      <div class="toolbar">
+        <button class="btn btn-logout" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="dashboard">
+      <aside class="panel">
+        <div class="panel-title">Active Incidents</div>
+        <div id="incidentList"></div>
+        
+        <div style="margin-top: 24px;">
+          <div class="panel-title">Quick Stats</div>
+          <div class="stat-card">
+            <div class="stat-label">Response Time</div>
+            <div class="stat-value">07:23</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Fleet Status</div>
+            <div class="stat-value">23/26</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Hospital Beds</div>
+            <div class="stat-value">156</div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="map-controls">
+          <button class="btn" style="background: #ef4444; color: white;" onclick="refreshMap()">⟳ Refresh</button>
+          <button class="btn" style="background: rgba(30, 41, 59, 0.8);">🗺️ Layers</button>
+          <button class="btn" style="background: rgba(30, 41, 59, 0.8);">📍 GPS</button>
+        </div>
+        <div id="map"></div>
+      </main>
+
+      <aside class="panel right">
+        <div class="panel-title">Hospitals Online</div>
+        <div id="hospitalList"></div>
+
+        <div style="margin-top: 24px;">
+          <div class="panel-title">Fleet Vehicles</div>
+          <div id="ambulanceList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const token = localStorage.getItem('token');
+      if (!token) window.location.href = '/login.html';
+
+      let map;
+
+      async function init() {
+        map = L.map('map').setView([26.9124, 75.7873], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        await loadDashboard();
+      }
+
+      async function loadDashboard() {
+        try {
+          const response = await fetch('/api/dashboard', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+
+          if (!data.success) throw new Error(data.error);
+
+          const incidents = data.data.map.incidents || [];
+          const hospitals = data.data.map.hospitals || [];
+          const ambulances = data.data.map.ambulances || [];
+
+          const incidentListEl = document.getElementById('incidentList');
+          incidentListEl.innerHTML = '';
+          incidents.slice(0, 5).forEach((inc) => {
+            const card = document.createElement('div');
+            card.className = 'incident-card';
+            
+            const title = document.createElement('div');
+            title.className = 'incident-title';
+            title.textContent = inc.title;
+            card.appendChild(title);
+            
+            const location = document.createElement('div');
+            location.className = 'incident-meta';
+            location.textContent = inc.location;
+            card.appendChild(location);
+            
+            const severity = document.createElement('div');
+            severity.className = 'incident-meta';
+            severity.style.marginTop = '4px';
+            severity.style.color = '#ef4444';
+            severity.style.fontWeight = '600';
+            severity.textContent = `${inc.severity.toUpperCase()} • ${inc.eta_minutes || 0}m`;
+            card.appendChild(severity);
+            
+            incidentListEl.appendChild(card);
+          });
+
+          const hospitalListEl = document.getElementById('hospitalList');
+          hospitalListEl.innerHTML = '';
+          hospitals.slice(0, 4).forEach((hosp) => {
+            const card = document.createElement('div');
+            card.className = 'stat-card';
+            
+            const name = document.createElement('div');
+            name.style.fontWeight = '600';
+            name.textContent = hosp.name;
+            card.appendChild(name);
+            
+            const beds = document.createElement('div');
+            beds.className = 'stat-label';
+            beds.style.marginTop = '4px';
+            beds.textContent = `${hosp.available_beds} beds available`;
+            card.appendChild(beds);
+            
+            hospitalListEl.appendChild(card);
+          });
+
+          const ambulanceListEl = document.getElementById('ambulanceList');
+          ambulanceListEl.innerHTML = '';
+          ambulances.slice(0, 5).forEach((amb) => {
+            const card = document.createElement('div');
+            card.className = 'stat-card';
+            
+            const number = document.createElement('div');
+            number.style.fontWeight = '600';
+            number.textContent = amb.vehicle_number;
+            card.appendChild(number);
+            
+            const status = document.createElement('div');
+            status.className = 'stat-label';
+            status.style.marginTop = '4px';
+            status.style.color = amb.status === 'available' ? '#10b981' : '#f59e0b';
+            status.textContent = amb.status.toUpperCase();
+            card.appendChild(status);
+            
+            ambulanceListEl.appendChild(card);
+          });
+        } catch (error) {
+          console.error('Error loading dashboard:', error);
+        }
+      }
+
+      function refreshMap() {
+        loadDashboard();
+      }
+
+      function logout() {
+        localStorage.clear();
+        window.location.href = '/login.html';
+      }
+
+      init();
+    </script>
+  </body>
+</html>

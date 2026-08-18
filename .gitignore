@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Local Environment & Secrets
+.env
+.env.local
+*.pem
+
+# Data & SQLite Databases
+data/*.db
+data/*.sqlite
+data/*.db-journal
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+
+# Build & Temporary
+dist/
+build/
+tmp/
