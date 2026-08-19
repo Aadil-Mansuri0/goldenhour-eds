@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - name: Checkout Code
@@ -34,11 +34,8 @@ jobs:
       - name: Run Test Suite (Unit & Integration)
         run: npm test
 
-      - name: Seed Database
-        run: node scripts/seed.js
-
       - name: Health Check Verification
         run: |
           PORT=3000 node server.js &
-          sleep 4
+          sleep 3
           curl --retry 10 --retry-delay 1 --retry-connrefused -f http://localhost:3000/api/health || exit 1

@@ -1,13 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const app = require('../../server');
-const { closeDatabase } = require('../../src/database');
+const { initializeDatabase, closeDatabase } = require('../../src/database');
 
 let server;
 const PORT = 3012;
 let dispatchToken;
 
 test.before(async () => {
+  await initializeDatabase();
   server = app.listen(PORT);
   await new Promise((resolve) => server.once('listening', resolve));
 
