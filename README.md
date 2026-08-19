@@ -224,32 +224,41 @@ kubectl get pods -n goldenhour
 
 ## 🧪 Test Verification
 
-The project includes an automated unit and integration test suite executing 17 comprehensive checks across authentication, routing, AI scoring, caching, and REST endpoints:
+The project includes an automated unit and integration test suite executing 26 comprehensive checks across authentication, Pan-India routing, Manchester clinical triage, voice intent parsing, database persistence, and REST endpoints:
 
 ```bash
 npm test
 ```
 
 ```text
-✔ GET /api/health returns 200 ok
+✔ GET /api/health returns 200 ok with Pan-India network status
 ✔ GET /api/ready returns 200 ready
 ✔ GET /api/verify-token verifies authenticated user
 ✔ GET /api/dashboard returns complete operational summary
 ✔ POST /api/incidents creates incident and logs audit
 ✔ POST /api/dispatch executes automated dispatch decision
-✔ PATCH /api/hospitals/:id updates bed availability
+✔ PATCH /api/hospitals/:id updates bed availability and logs audit
+✔ GET /api/hospitals/nearby performs geospatial distance calculations
+✔ GET /api/locations/search finds Pan-India city hubs
+✔ POST /api/ai/voice-parse extracts emergency nature and patient count
+✔ POST /api/ai/triage evaluates Manchester triage clinical urgency
 ✔ GET /api/audit-logs returns list of system events
-✔ GET /api/metrics returns system performance SLAs
-✔ dispatchService: getDistanceKm returns valid distance
-✔ dispatchService: estimateEtaKm returns positive minutes
+✔ GET /api/metrics returns real calculated performance SLAs
+✔ GET /api/analytics/regional returns Pan-India aggregated metrics
+✔ dispatchService: getDistanceKm returns valid distance for Indian coordinates
+✔ dispatchService: estimateEtaKm returns realistic minutes
 ✔ dispatchService: normalizeSeverity handles various inputs
 ✔ aiService: scoreDispatchReadiness returns score bounded below 100
 ✔ aiService: forecastDemand returns integer percent
-✔ routingService: buildRoute generates route payload
+✔ aiService: evaluateClinicalTriage classifies P1 Resuscitation accurately
+✔ aiService: evaluateClinicalTriage classifies P2 Very Urgent cardiac chest pain
+✔ aiService: parseVoiceEmergencyInput extracts nature and count
+✔ aiService: processAIAssistantQuery answers hospital capacity grounded in context
+✔ routingService: buildRoute generates Pan-India emergency corridor payload
 ✔ auth: verifyPassword authenticates valid demo users
 ✔ auth: signToken produces JWT string
 
-ℹ tests 17 | pass 17 | fail 0
+ℹ tests 26 | pass 26 | fail 0
 ```
 
 ---

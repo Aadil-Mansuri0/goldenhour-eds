@@ -1,22 +1,22 @@
-const { initializeDatabase, run, all } = require('../src/database');
+const { initializeDatabase, get } = require('../src/database');
 
 async function main() {
+  console.log('Initializing and seeding Pan-India GoldenHour EDS database...');
   await initializeDatabase();
 
-  const users = [
-    { username: 'dispatcher', role: 'dispatcher', name: 'Dispatcher Ops', password: 'goldenhour@123' },
-    { username: 'admin', role: 'admin', name: 'Admin Lead', password: 'admin@golden' },
-    { username: 'hospital', role: 'hospital', name: 'Hospital Liaison', password: 'hospital@2026' },
-    { username: 'citizen', role: 'citizen', name: 'Citizen Portal', password: 'citizen@123' },
-    { username: 'ambulance', role: 'ambulance', name: 'Ambulance Fleet', password: 'ambulance@123' },
-    { username: 'superadmin', role: 'super_admin', name: 'Super Admin', password: 'superadmin@123' }
-  ];
+  const userCount = await get('SELECT COUNT(*) AS count FROM users');
+  const incidentCount = await get('SELECT COUNT(*) AS count FROM incidents');
+  const ambulanceCount = await get('SELECT COUNT(*) AS count FROM ambulances');
+  const hospitalCount = await get('SELECT COUNT(*) AS count FROM hospitals');
 
-  console.log('Seeded demo users:', users.map((u) => u.username).join(', '));
-  const incidents = await all('SELECT COUNT(*) AS count FROM incidents');
-  const ambulances = await all('SELECT COUNT(*) AS count FROM ambulances');
-  const hospitals = await all('SELECT COUNT(*) AS count FROM hospitals');
-  console.log('Seed summary:', { incidents: incidents[0].count, ambulances: ambulances[0].count, hospitals: hospitals[0].count });
+  console.log('Seed summary:', {
+    users: userCount?.count || 0,
+    incidents: incidentCount?.count || 0,
+    ambulances: ambulanceCount?.count || 0,
+    hospitals: hospitalCount?.count || 0
+  });
+  console.log('Pan-India dataset successfully primed.');
+  process.exit(0);
 }
 
 main().catch((error) => {

@@ -1,161 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - GoldenHour</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 24px;
-        background: rgba(15, 23, 42, 0.95);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-      }
-      .brand-title { font-size: 18px; font-weight: 800; color: #f59e0b; }
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 32px 24px;
-      }
-      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 32px; }
-      .card {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 12px;
-        padding: 20px;
-      }
-      .card-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #64748b; margin-bottom: 8px; }
-      .card-value { font-size: 28px; font-weight: 900; }
-      .card-change { font-size: 11px; color: #10b981; margin-top: 4px; }
-      h2 { margin-bottom: 16px; font-size: 20px; }
-      .table {
-        width: 100%;
-        border-collapse: collapse;
-        background: rgba(30, 41, 59, 0.8);
-        border-radius: 12px;
-        overflow: hidden;
-      }
-      .table thead {
-        background: rgba(15, 23, 42, 0.9);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-      }
-      .table th {
-        padding: 12px 16px;
-        text-align: left;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #64748b;
-      }
-      .table td {
-        padding: 12px 16px;
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-      }
-      .badge {
-        display: inline-block;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: 700;
-      }
-      .badge.active { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-      .badge.pending { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
-      @media (max-width: 1200px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    </style>
-  </head>
-  <body>
-    <div class="topbar">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="font-size: 24px;">⚙️</div>
-        <div class="brand-title">Admin Dashboard</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin & Governance Console — GoldenHour EDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .brand-title { font-size: 18px; font-weight: 800; color: #f59e0b; }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .card {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; letter-spacing: 0.5px; }
+    .card-value { font-size: 30px; font-weight: 900; }
+    .card-change { font-size: 11px; color: #10b981; margin-top: 4px; }
+    h2 { margin-bottom: 16px; font-size: 18px; font-weight: 800; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .table thead {
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      font-size: 13px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .badge.active { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .badge.pending { background: rgba(251, 146, 60, 0.2); color: #fed7aa; }
+    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="font-size: 24px;">⚙️</div>
+      <div class="brand-title">GoldenHour Admin Console</div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <a href="/" style="color: #38bdf8; text-decoration: none; font-size: 12px; font-weight: 600;">← Command Center</a>
+      <button onclick="logout()" style="padding: 6px 12px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; cursor: pointer; font-size: 12px;">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Pan-India Hospitals</div>
+        <div class="card-value" id="kpiHospitalsVal">--</div>
+        <div class="card-change">Across 17+ State Hubs</div>
       </div>
-      <button onclick="logout()" style="padding: 8px 14px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: none; border-radius: 6px; cursor: pointer;">Logout</button>
+      <div class="card">
+        <div class="card-title">Total ICU / Critical Beds</div>
+        <div class="card-value" id="kpiBedsVal" style="color: #10b981;">--</div>
+        <div class="card-change">Live telemetry verified</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Emergency Fleet Units</div>
+        <div class="card-value" id="kpiFleetVal" style="color: #38bdf8;">--</div>
+        <div class="card-change">ALS & BLS Readiness</div>
+      </div>
+      <div class="card">
+        <div class="card-title">System Reliability SLA</div>
+        <div class="card-value" id="kpiSlaVal" style="color: #f59e0b;">99.98%</div>
+        <div class="card-change">Zero packet drop</div>
+      </div>
     </div>
 
-    <div class="container">
-      <div class="grid">
-        <div class="card">
-          <div class="card-title">Total Users</div>
-          <div class="card-value">248</div>
-          <div class="card-change">+12 this month</div>
-        </div>
-        <div class="card">
-          <div class="card-title">Active Sessions</div>
-          <div class="card-value">47</div>
-          <div class="card-change">18.9% online</div>
-        </div>
-        <div class="card">
-          <div class="card-title">System Health</div>
-          <div class="card-value">99.8%</div>
-          <div class="card-change">All systems operational</div>
-        </div>
-        <div class="card">
-          <div class="card-title">API Calls</div>
-          <div class="card-value">1.2M</div>
-          <div class="card-change">+240K today</div>
-        </div>
-      </div>
+    <h2>📜 Live Enterprise Audit Trail</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Log ID</th>
+          <th>Actor</th>
+          <th>Action</th>
+          <th>Category</th>
+          <th>Details</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody id="auditTableBody">
+        <tr><td colspan="6" style="text-align:center; color:#94a3b8;">Loading live audit events...</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-      <h2>Recent Activity</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Role</th>
-            <th>Action</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>dispatcher@goldenhour.io</td>
-            <td>Dispatcher</td>
-            <td>Created incident INC-1005</td>
-            <td>2 min ago</td>
-            <td><span class="badge active">Completed</span></td>
-          </tr>
-          <tr>
-            <td>admin@goldenhour.io</td>
-            <td>Admin</td>
-            <td>Updated hospital capacity</td>
-            <td>18 min ago</td>
-            <td><span class="badge active">Completed</span></td>
-          </tr>
-          <tr>
-            <td>hospital@goldenhour.io</td>
-            <td>Hospital</td>
-            <td>Accepted patient transfer</td>
-            <td>1 hr ago</td>
-            <td><span class="badge active">Completed</span></td>
-          </tr>
-          <tr>
-            <td>ambulance@goldenhour.io</td>
-            <td>Ambulance</td>
-            <td>Location update</td>
-            <td>5 sec ago</td>
-            <td><span class="badge pending">Pending</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <script>
+    async function loadAdminData() {
+      try {
+        const [metricsRes, auditRes, hospRes, ambRes] = await Promise.all([
+          fetch('/api/metrics').then(r => r.json()),
+          fetch('/api/audit-logs').then(r => r.json()),
+          fetch('/api/hospitals').then(r => r.json()),
+          fetch('/api/ambulances').then(r => r.json())
+        ]);
 
-    <script>
-      const token = localStorage.getItem('token');
-      if (!token) window.location.href = '/login.html';
+        if (hospRes.success) {
+          document.getElementById('kpiHospitalsVal').textContent = hospRes.count;
+          const totalBeds = hospRes.data.reduce((sum, h) => sum + (Number(h.available_beds) || 0), 0);
+          document.getElementById('kpiBedsVal').textContent = totalBeds;
+        }
 
-      function logout() {
-        localStorage.clear();
-        window.location.href = '/login.html';
+        if (ambRes.success) {
+          document.getElementById('kpiFleetVal').textContent = ambRes.count;
+        }
+
+        if (auditRes.success && auditRes.data) {
+          const tbody = document.getElementById('auditTableBody');
+          tbody.innerHTML = auditRes.data.map(log => `
+            <tr>
+              <td style="font-weight:700; color:#38bdf8;">${log.id}</td>
+              <td><b>${log.actor}</b></td>
+              <td><span class="badge active">${log.action}</span></td>
+              <td><span class="badge pending">${log.category}</span></td>
+              <td>${log.details || 'System event'}</td>
+              <td style="color:#94a3b8; font-size:12px;">${new Date(log.timestamp).toLocaleTimeString()}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        console.error('Admin data load failed:', e);
       }
-    </script>
-  </body>
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = '/login.html';
+    }
+
+    loadAdminData();
+    setInterval(loadAdminData, 10000);
+  </script>
+</body>
 </html>

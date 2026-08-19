@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GoldenHour EDS — National Emergency Dispatch & Incident Intelligence</title>
-  <meta name="description" content="Enterprise Emergency Dispatch Platform with real-time GPS fleet tracking, AI clinical triage, voice emergency dispatch, and hospital ICU capacity coordination.">
+  <title>GoldenHour EDS — Pan-India Enterprise Emergency Dispatch & Incident Intelligence</title>
+  <meta name="description" content="MNC-Grade Enterprise Emergency Dispatch System with real-time GPS fleet tracking, AI clinical triage, voice emergency dispatch, and hospital ICU capacity coordination across India.">
 
   <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
   <!-- Leaflet Map Engine -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Modular Enterprise CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -22,16 +22,16 @@
 
   <!-- Top App Navigation Header -->
   <header class="app-header">
-    <a href="#" class="brand-area">
+    <a href="/" class="brand-area">
       <div class="brand-logo">🚑</div>
       <div>
         <div class="brand-title">GoldenHour <span>EDS</span></div>
       </div>
-      <span class="brand-badge">v6.0 Enterprise</span>
+      <span class="brand-badge">Pan-India MNC</span>
     </a>
 
     <!-- Navigation Pills -->
-    <nav class="nav-pills">
+    <nav class="nav-pills" aria-label="Main Navigation">
       <button class="nav-btn active" data-tab="tab-command" onclick="switchTab('tab-command')">
         🚨 Command Center
       </button>
@@ -39,10 +39,10 @@
         🏥 Hospital Beds
       </button>
       <button class="nav-btn" data-tab="tab-navigation" onclick="switchTab('tab-navigation')">
-        🗺️ GPS Route Finder
+        🗺️ Route Optimizer
       </button>
       <button class="nav-btn" data-tab="tab-triage" onclick="switchTab('tab-triage')">
-        🤖 AI Clinical Triage
+        🤖 Clinical Triage & AI
       </button>
       <button class="nav-btn" data-tab="tab-voice" onclick="switchTab('tab-voice')">
         🎙️ Voice Dispatch
@@ -57,30 +57,41 @@
 
     <!-- Header Right Controls -->
     <div class="header-right">
+      <div class="location-badge" onclick="openLocationModal()" title="Click to change origin location or detect live GPS" id="locationBadgeBtn">
+        <span>📍</span>
+        <span id="headerLocationName">Jaipur Central Command HQ</span>
+      </div>
+
+      <!-- Quick Role Portal Selector -->
+      <select class="form-select" style="padding: 6px 10px; font-size: 11px; width: auto; background: rgba(30,41,59,0.9); border-color: rgba(148,163,184,0.3); font-weight: 700;" onchange="if(this.value) window.location.href=this.value;">
+        <option value="">👤 Role Portals...</option>
+        <option value="/login.html">🔑 Login / Sign In</option>
+        <option value="/citizen-portal.html">🆘 Citizen SOS Portal</option>
+        <option value="/dispatcher-portal.html">🚨 Dispatcher Ops</option>
+        <option value="/hospital-portal.html">🏥 Hospital Liaison</option>
+        <option value="/ambulance-portal.html">🚑 Ambulance Unit</option>
+        <option value="/admin-portal.html">⚙️ Admin Console</option>
+        <option value="/superadmin-portal.html">👑 Super Admin</option>
+      </select>
+
       <div class="status-pill">
         <span class="live-pulse"></span>
-        <span>SYSTEM LIVE</span>
+        <span id="sysLiveStatus">SYSTEM LIVE</span>
       </div>
-      <select class="role-selector" onchange="showToast('Switched operational role to ' + this.value, 'info')">
-        <option value="Dispatcher">🚨 Dispatcher Lead</option>
-        <option value="Admin">⚙️ System Admin</option>
-        <option value="Hospital">🏥 Hospital Liaison</option>
-        <option value="Ambulance">🚑 Fleet Paramedic</option>
-      </select>
     </div>
   </header>
 
-  <!-- Main Application Content Container -->
+  <!-- Main Application Container -->
   <main class="main-content">
     
-    <!-- Top KPI Overview Banner -->
+    <!-- Top Dynamic KPI Overview Banner -->
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-icon kpi-red">🚨</div>
         <div class="kpi-info">
           <h4>Active Incidents</h4>
-          <div class="kpi-val" id="kpiActiveIncidents">4</div>
-          <div class="kpi-sub">Priority 1 & 2 in Queue</div>
+          <div class="kpi-val" id="kpiActiveIncidents">--</div>
+          <div class="kpi-sub">Critical Queue</div>
         </div>
       </div>
       
@@ -88,7 +99,7 @@
         <div class="kpi-icon kpi-emerald">🚑</div>
         <div class="kpi-info">
           <h4>Available Fleet</h4>
-          <div class="kpi-val" id="kpiAvailableAmbulances">3 / 5</div>
+          <div class="kpi-val" id="kpiAvailableAmbulances">-- / --</div>
           <div class="kpi-sub">ALS & BLS Ready</div>
         </div>
       </div>
@@ -97,322 +108,484 @@
         <div class="kpi-icon kpi-blue">🏥</div>
         <div class="kpi-info">
           <h4>Available ICU Beds</h4>
-          <div class="kpi-val" id="kpiAvailableBeds">127</div>
-          <div class="kpi-sub">Across 4 Apex Centers</div>
+          <div class="kpi-val" id="kpiAvailableBeds">--</div>
+          <div class="kpi-sub">Across Network</div>
         </div>
       </div>
 
       <div class="kpi-card">
-        <div class="kpi-icon kpi-amber">⏱️</div>
+        <div class="kpi-icon kpi-purple">⏱️</div>
         <div class="kpi-info">
-          <h4>Golden Hour Window</h4>
-          <div class="kpi-val">5.4 <span style="font-size:14px;">min</span></div>
-          <div class="kpi-sub">Avg Urban ETA Target</div>
+          <h4>Avg Response ETA</h4>
+          <div class="kpi-val" id="kpiAvgEta">5.2 min</div>
+          <div class="kpi-sub">Under 8m SLA Target</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-yellow">🛡️</div>
+        <div class="kpi-info">
+          <h4>Golden Hour SLA</h4>
+          <div class="kpi-val" id="kpiSla">98.8%</div>
+          <div class="kpi-sub">Protocol Compliance</div>
         </div>
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 1: COMMAND CENTER (MAIN DASHBOARD) -->
-    <!-- ========================================== -->
-    <section id="tab-command" class="tab-pane active">
-      <div class="grid-3col">
-        <!-- Left: Incident Queue -->
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>🚨 Live Emergency Queue</span>
-            </div>
-            <button class="btn btn-secondary btn-sm" onclick="showToast('Syncing real-time emergency feed...', 'info')">
-              🔄 Refresh
-            </button>
+    <!-- ======================================================== -->
+    <!-- TAB 1: 🚨 COMMAND CENTER & LIVE DISPATCH MAP              -->
+    <!-- ======================================================== -->
+    <div id="tab-command" class="tab-pane active">
+      <div class="command-grid">
+        
+        <!-- Left: Incident Queue & Quick Dispatch -->
+        <div class="card panel-sidebar">
+          <div class="card-header">
+            <div class="card-title">🚨 Active Incidents Queue</div>
+            <button class="btn btn-primary btn-sm" onclick="openNewIncidentModal()">+ New Incident</button>
           </div>
-          <div class="incident-list" id="incidentQueueList">
-            <!-- Rendered dynamically by app.js -->
+          
+          <div class="search-bar">
+            <input type="text" id="incidentSearchInput" placeholder="Filter by ID, nature, or location..." oninput="filterIncidents(this.value)">
+          </div>
+
+          <div class="incident-queue" id="incidentQueueList">
+            <!-- Rendered dynamically by AppState -->
           </div>
         </div>
 
-        <!-- Right: Real GPS Operations Map -->
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>📍 Geospatial Operations Grid</span>
+        <!-- Right: Real Interactive Dispatch Map -->
+        <div class="card map-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🗺️ Live GPS Tactical Dispatch Map</div>
+              <div class="card-subtitle">Real-time telemetry of Incidents, Ambulances, and Apex Hospital Centers</div>
             </div>
-            <div style="font-size:11px; color:var(--text-muted);">
-              Pins: 🔴 Incidents | 🟢 Available Ambulances | 🏥 Hospitals
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn btn-secondary btn-sm" onclick="detectLiveGPSLocation()">📡 Use Live GPS</button>
+              <button class="btn btn-secondary btn-sm" onclick="resetMapView()">🎯 Center Map</button>
             </div>
           </div>
-          <div id="dispatchMap"></div>
+
+          <div class="map-container" id="dispatchMap"></div>
+
+          <div class="map-legend">
+            <div class="legend-item"><span class="dot dot-blue"></span> Origin / HQ</div>
+            <div class="legend-item"><span class="dot dot-red"></span> Critical Incident (P1)</div>
+            <div class="legend-item"><span class="dot dot-yellow"></span> High / Urgent (P2/P3)</div>
+            <div class="legend-item"><span class="dot dot-green"></span> Available Ambulance</div>
+            <div class="legend-item"><span class="dot dot-purple"></span> Dispatched Ambulance</div>
+            <div class="legend-item"><span class="dot dot-red-square"></span> Apex Hospital</div>
+          </div>
         </div>
+
       </div>
-    </section>
+    </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: HOSPITAL NETWORK & BED CAPACITY -->
-    <!-- ========================================== -->
-    <section id="tab-hospitals" class="tab-pane">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span>🏥 Regional Hospital Network & Real-Time ICU Bed Management</span>
-          </div>
-          <div style="font-size:12px; color:var(--text-muted);">
-            Click <b>[ + ]</b> or <b>[ - ]</b> to update live ICU bed capacity across hospitals
-          </div>
-        </div>
-        <div class="hospital-grid" id="hospitalGridList">
-          <!-- Rendered dynamically by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 3: GPS NAVIGATION & DYNAMIC ROUTE FINDER -->
-    <!-- ========================================== -->
-    <section id="tab-navigation" class="tab-pane">
-      <div class="grid-3col">
-        <!-- Route Controls -->
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>📍 Route Origin & Destination Controls</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Detect Real Browser GPS</label>
-            <button class="btn btn-primary" style="width:100%;" onclick="detectLiveGPSLocation()">
-              📡 Detect Live GPS Coordinates
-            </button>
-            <div id="gpsDetectionStatus" style="font-size:11px; margin-top:6px; font-family:var(--font-mono);"></div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Or Select Preset City Sector</label>
-            <select class="form-control" onchange="setCityPresetLocation(this.value)">
-              <option value="jaipur_central">Jaipur Central Command (26.912, 75.787)</option>
-              <option value="jaipur_airport">Jaipur International Terminal (26.828, 75.805)</option>
-              <option value="delhi_aiims">Delhi AIIMS Medical Corridor (28.567, 77.210)</option>
-              <option value="mumbai_bandra">Mumbai Western Grid (19.059, 72.829)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Select Destination Hospital</label>
-            <select class="form-control" id="navHospitalSelect" onchange="selectNavHospital(this.value)">
-              <!-- Populated dynamically -->
-            </select>
-          </div>
-
-          <!-- Calculated Route Summary Card -->
-          <div style="background:var(--bg-input); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px; margin-top:16px;">
-            <div style="font-size:11px; text-transform:uppercase; color:var(--text-dim); font-weight:700;">Calculated Dynamic Road Route</div>
-            <div style="font-size:13px; font-weight:700; color:var(--accent-blue); margin-top:4px;" id="routeHospitalDisplay">SMS Super Specialty Trauma</div>
-            <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px;">
-              <div>Road Distance: <b style="color:var(--text-main);" id="routeDistanceDisplay">--</b></div>
-              <div>Estimated Transit: <b style="color:#34d399;" id="routeEtaDisplay">--</b></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Navigation Map -->
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>🗺️ Dynamic Turn-by-Turn Route Visualizer</span>
-            </div>
-            <div style="font-size:11px; color:var(--text-muted);">
-              Origin (A) $\rightarrow$ Destination Hospital Polyline
-            </div>
-          </div>
-          <div id="navMap"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 4: AI CLINICAL TRIAGE ASSISTANT -->
-    <!-- ========================================== -->
-    <section id="tab-triage" class="tab-pane">
-      <div class="triage-shell">
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>🤖 Manchester Clinical Triage Engine</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Patient Symptoms & Clinical Presentation</label>
-            <textarea id="triageSymptomsInput" class="form-control" rows="4" placeholder="e.g. 58yo male experiencing crushing substernal chest pain radiating to left jaw, profuse diaphoresis, shortness of breath, BP 85/50..."></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Patient Age (Years)</label>
-            <input type="number" id="triageAgeInput" class="form-control" value="58" min="1" max="110">
-          </div>
-          <button class="btn btn-primary" style="width:100%;" onclick="performClinicalTriage()">
-            ⚡ Run Clinical Triage & Hospital Match
-          </button>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div class="panel-title">
-              <span>📋 Clinical Recommendation & Triage Tier</span>
-            </div>
-          </div>
-          <div id="triageResultDisplay" class="triage-result-card">
-            <div style="color:var(--text-dim); text-align:center; padding:30px 0;">
-              Enter patient symptoms and click "Run Clinical Triage" to generate clinical triage score and hospital recommendation.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- TAB 5: REAL WEB SPEECH VOICE DISPATCH -->
-    <!-- ========================================== -->
-    <section id="tab-voice" class="tab-pane">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span>🎙️ Hands-Free Emergency Voice Intake (Web Speech API)</span>
-          </div>
-        </div>
-        <div class="voice-shell">
-          <button id="voiceMicBtn" class="voice-mic-btn" onclick="toggleVoiceRecognition()" title="Click to Speak">
-            🎙️
-          </button>
+    <!-- ======================================================== -->
+    <!-- TAB 2: 🏥 HOSPITAL CAPACITY & ICU NETWORK                 -->
+    <!-- ======================================================== -->
+    <div id="tab-hospitals" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
           <div>
-            <div style="font-size:16px; font-weight:700; color:var(--text-main);">Click Microphone & Speak Emergency Details</div>
-            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
-              Try: <i>"Emergency traffic accident at highway junction with two injured passengers"</i> or <i>"Severe chest pain and collapse"</i>
-            </div>
+            <div class="card-title">🏥 Pan-India Trauma & ICU Hospital Network</div>
+            <div class="card-subtitle">Real-time bed availability dynamically calculated from your current operational coordinates</div>
           </div>
-          <div class="voice-transcript-box" id="voiceTranscript">
-            Press the microphone button and speak to transcribe emergency call in real time...
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <select id="hospitalRegionFilter" class="form-select" onchange="filterHospitalsByRegion(this.value)">
+              <option value="all">🇮🇳 All India (National Grid)</option>
+              <option value="jaipur" selected>Jaipur Emergency Hub</option>
+              <option value="delhi">Delhi NCR Zone</option>
+              <option value="mumbai">Mumbai Metropolitan Zone</option>
+              <option value="bengaluru">Bengaluru Tech Corridor</option>
+              <option value="hyderabad">Hyderabad Cyber Zone</option>
+              <option value="chennai">Chennai Coastal Zone</option>
+              <option value="kolkata">Kolkata Eastern Grid</option>
+              <option value="ahmedabad">Ahmedabad Western Hub</option>
+              <option value="pune">Pune Industrial Grid</option>
+              <option value="lucknow">Lucknow Central Hub</option>
+              <option value="chandigarh">Chandigarh Northern Zone</option>
+              <option value="guwahati">Guwahati North-East Hub</option>
+              <option value="kochi">Kochi Southern Grid</option>
+              <option value="bhopal">Bhopal Central Hub</option>
+              <option value="patna">Patna Eastern Zone</option>
+              <option value="bhubaneswar">Bhubaneswar Coastal Hub</option>
+              <option value="srinagar">Srinagar High-Altitude Hub</option>
+            </select>
           </div>
-          <div id="voiceStatus" style="font-size:12px; color:var(--accent-blue); font-weight:600;">
-            Ready for voice input.
-          </div>
+        </div>
+
+        <div class="hospital-grid" id="hospitalGridList">
+          <!-- Rendered dynamically -->
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 6: REAL-TIME FLEET TELEMETRY -->
-    <!-- ========================================== -->
-    <section id="tab-fleet" class="tab-pane">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span>🚑 Active Emergency Fleet Status & Telemetry</span>
+    <!-- ======================================================== -->
+    <!-- TAB 3: 🗺️ DYNAMIC ROUTE OPTIMIZER & NAVIGATION            -->
+    <!-- ======================================================== -->
+    <div id="tab-navigation" class="tab-pane">
+      <div class="command-grid">
+        
+        <!-- Left: Route Controls & Turn-by-Turn Steps -->
+        <div class="card panel-sidebar">
+          <div class="card-header">
+            <div class="card-title">⚡ Navigation Parameters</div>
           </div>
-          <button class="btn btn-secondary btn-sm" onclick="showToast('Fleet telemetry refreshed.', 'info')">
-            🔄 Refresh Telemetry
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Operational Origin</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" id="navOriginInput" class="form-input" readonly value="Jaipur Central Command HQ">
+              <button class="btn btn-secondary btn-sm" onclick="openLocationModal()">Change</button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label">Destination Hospital</label>
+            <select id="navHospitalSelect" class="form-select" onchange="selectNavHospital(this.value)">
+              <!-- Dynamic Options -->
+            </select>
+          </div>
+
+          <div class="route-metrics-card">
+            <div class="route-metric">
+              <div class="rm-label">Route Distance</div>
+              <div class="rm-val" id="routeDistanceDisplay">-- km</div>
+            </div>
+            <div class="route-metric">
+              <div class="rm-label">Emergency ETA</div>
+              <div class="rm-val" id="routeEtaDisplay">-- mins</div>
+            </div>
+            <div class="route-metric">
+              <div class="rm-label">Traffic Mode</div>
+              <div class="rm-val" style="color: #34d399;">Siren Priority</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px;">
+            <div class="panel-title">Turn-By-Turn Emergency Corridor Steps</div>
+            <div class="nav-steps-list" id="navStepsList">
+              <!-- Rendered Dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Dedicated Route Map -->
+        <div class="card map-card">
+          <div class="card-header">
+            <div class="card-title">🗺️ Real Emergency Route Navigation</div>
+            <div style="font-size: 12px; color: var(--accent-blue); font-weight: 700;" id="routeHospitalDisplay">Apex Emergency Destination</div>
+          </div>
+          <div class="map-container" id="navMap"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: 🤖 AI CLINICAL TRIAGE & COPILOT                    -->
+    <!-- ======================================================== -->
+    <div id="tab-triage" class="tab-pane">
+      <div class="triage-grid">
+        
+        <!-- Left: Manchester Clinical Triage Evaluator -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🩺 Manchester Clinical Triage Evaluator</div>
+              <div class="card-subtitle">Evidence-based triage categorization & Golden Hour survival index</div>
+            </div>
+            <span class="badge badge-high">MTS Standard</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Patient Symptoms & Clinical Presentation</label>
+            <textarea id="triageSymptomsInput" class="form-textarea" rows="3" placeholder="e.g. 58yo male with severe crushing retrosternal chest pain radiating to left arm, profuse diaphoresis, dyspnea..."></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label">Patient Age</label>
+              <input type="number" id="triageAgeInput" class="form-input" value="52" min="1" max="110">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Oxygen Saturation (SpO2 %)</label>
+              <input type="number" id="triageSpo2Input" class="form-input" value="94" min="50" max="100">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="performClinicalTriage()">
+            ⚡ Run Clinical Triage Evaluation
+          </button>
+
+          <div id="triageResultDisplay" class="triage-result-card">
+            <div style="color: var(--text-dim); text-align: center; padding: 20px 0;">
+              Enter symptoms above and click "Run Clinical Triage Evaluation" to view clinical classification.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: AI Dispatch Copilot -->
+        <div class="card chat-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🤖 AI Emergency Dispatch Assistant</div>
+              <div class="card-subtitle">Answers live hospital bed capacity, fleet availability, and clinical protocols grounded in live database</div>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="aiChatMessages">
+            <div class="chat-bubble ai">
+              Hello Dispatcher. I am your GoldenHour Clinical Intelligence Copilot. You can ask me questions like:
+              <ul style="margin-top: 6px; margin-left: 18px; font-size: 11px;">
+                <li>"What is the total ICU bed capacity?"</li>
+                <li>"How many ambulances are available?"</li>
+                <li>"What is the highest priority incident in queue?"</li>
+                <li>"What is the nearest hospital to my location?"</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="chat-input-bar">
+            <input type="text" id="aiQueryInput" class="form-input" placeholder="Ask AI assistant about beds, fleet, or protocols..." onkeydown="if(event.key==='Enter') sendAIChatMessage()">
+            <button class="btn btn-primary" onclick="sendAIChatMessage()">Send</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: 🎙️ VOICE EMERGENCY DISPATCH                        -->
+    <!-- ======================================================== -->
+    <div id="tab-voice" class="tab-pane">
+      <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 32px 24px;">
+        <div class="card-title" style="font-size: 20px; margin-bottom: 8px;">🎙️ Real-Time Voice Emergency Intake</div>
+        <div class="card-subtitle" style="margin-bottom: 24px;">
+          Speak caller emergency details. Uses browser Web Speech API for automated real transcription, AI clinical intent parsing, and instant incident queue logging.
+        </div>
+
+        <button class="voice-mic-btn" id="voiceMicBtn" onclick="toggleVoiceRecognition()" title="Click to start/stop voice recording">
+          🎤
+        </button>
+
+        <div class="voice-status" id="voiceStatus">Click the microphone to begin listening</div>
+
+        <div class="voice-transcript-box" id="voiceTranscript">
+          Transcript will appear here in real-time as you speak...
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 18px; flex-wrap: wrap;">
+          <button class="btn btn-secondary btn-sm" onclick="setSampleVoiceText('Multi-vehicle crash on highway with 3 people injured bleeding heavily')">
+            Sample: Trauma Crash Call
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="setSampleVoiceText('Patient having crushing chest pain radiating to left arm and sweating')">
+            Sample: Cardiac STEMI Call
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="submitVoiceAsIncident()">
+            🚨 Log Voice Incident Directly
           </button>
         </div>
-        <div style="overflow-x:auto;">
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 6: 🚑 FLEET TELEMETRY & ALS/BLS READINESS            -->
+    <!-- ======================================================== -->
+    <div id="tab-fleet" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">🚑 Live Emergency Fleet Telemetry</div>
+            <div class="card-subtitle">Real-time status, battery readiness, crew count, and GPS positioning of all emergency response vehicles</div>
+          </div>
+          <div>
+            <select id="fleetStatusFilter" class="form-select" onchange="filterFleetTable(this.value)">
+              <option value="all">All Fleet Units</option>
+              <option value="available">Available Units</option>
+              <option value="dispatched">Dispatched Units</option>
+              <option value="en-route">En Route Units</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
                 <th>Unit ID</th>
-                <th>Vehicle Reg</th>
+                <th>Vehicle Number</th>
+                <th>City / Sector</th>
                 <th>Classification</th>
                 <th>Status</th>
-                <th>Battery / Health</th>
-                <th>Paramedic Crew</th>
-                <th>Current Speed</th>
+                <th>Battery / Readiness</th>
+                <th>Crew</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="fleetTableBody">
-              <!-- Rendered dynamically by app.js -->
+              <!-- Rendered Dynamically -->
             </tbody>
           </table>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 7: INCIDENT AUDIT REGISTRY -->
-    <!-- ========================================== -->
-    <section id="tab-incidents" class="tab-pane">
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span>📜 Incident Audit Trail & Governance Log</span>
+    <!-- ======================================================== -->
+    <!-- TAB 7: 📜 INCIDENT LOG & AUDIT TRAIL                      -->
+    <!-- ======================================================== -->
+    <div id="tab-incidents" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">📜 Emergency Incident Log & Audit History</div>
+            <div class="card-subtitle">Complete chronological record of emergency dispatches, triage scores, and outcomes</div>
           </div>
-          <button class="btn btn-primary btn-sm" onclick="exportIncidentsCSV()">
-            📥 Export to CSV
-          </button>
+          <div style="display: flex; gap: 8px;">
+            <select id="incidentSeverityFilter" class="form-select" onchange="filterIncidentLog(this.value)">
+              <option value="all">All Severities</option>
+              <option value="critical">Critical (P1)</option>
+              <option value="high">High (P2)</option>
+              <option value="medium">Medium (P3)</option>
+              <option value="resolved">Resolved</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" onclick="exportIncidentsCSV()">📥 Export CSV</button>
+          </div>
         </div>
-        <div style="overflow-x:auto;">
+
+        <div class="table-container">
           <table class="data-table">
             <thead>
               <tr>
                 <th>Incident ID</th>
-                <th>Title</th>
+                <th>Title & Nature</th>
                 <th>Type</th>
                 <th>Severity</th>
-                <th>Status</th>
-                <th>Location</th>
+                <th>Location / City</th>
                 <th>Patients</th>
-                <th>Logged Time</th>
+                <th>Status</th>
+                <th>Time Logged</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-main);">INC-1001</td>
-                <td>Major Multi-Vehicle Collision</td>
-                <td>Trauma</td>
-                <td><span class="badge badge-critical">CRITICAL</span></td>
-                <td><span class="badge badge-high">ACTIVE</span></td>
-                <td>NH-48 Highway Junction</td>
-                <td>4</td>
-                <td>08:00:00</td>
-              </tr>
-              <tr>
-                <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-main);">INC-1002</td>
-                <td>Acute STEMI / Cardiac Arrest</td>
-                <td>Cardiac</td>
-                <td><span class="badge badge-critical">CRITICAL</span></td>
-                <td><span class="badge badge-low">DISPATCHED</span></td>
-                <td>Vaishali Nagar Commercial Sector</td>
-                <td>1</td>
-                <td>08:10:00</td>
-              </tr>
-              <tr>
-                <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-main);">INC-1003</td>
-                <td>Acute Respiratory Distress</td>
-                <td>Pulmonary</td>
-                <td><span class="badge badge-high">HIGH</span></td>
-                <td><span class="badge badge-medium">EN-ROUTE</span></td>
-                <td>Sanganer Industrial Zone</td>
-                <td>2</td>
-                <td>08:06:00</td>
-              </tr>
-              <tr>
-                <td style="font-family:var(--font-mono); font-weight:700; color:var(--text-main);">INC-1004</td>
-                <td>Fall from Height / Orthopedic Trauma</td>
-                <td>Trauma</td>
-                <td><span class="badge badge-medium">MEDIUM</span></td>
-                <td><span class="badge badge-low">STABLE</span></td>
-                <td>Malviya Nagar Tech Park</td>
-                <td>1</td>
-                <td>08:22:00</td>
-              </tr>
+            <tbody id="incidentLogTableBody">
+              <!-- Rendered Dynamically -->
             </tbody>
           </table>
         </div>
       </div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- Global Toast Notification Container -->
+  <!-- ======================================================== -->
+  <!-- UNIVERSAL LOCATION SELECTION MODAL                       -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="locationModal">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <div class="modal-title">📍 Select Operational Origin / Location</div>
+        <button class="modal-close" onclick="closeLocationModal()">✕</button>
+      </div>
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+        Changing your operational origin immediately updates the map view, recalculates all hospital distances, updates ETAs, and recalibrates the routing engine across all Indian zones.
+      </div>
+
+      <!-- Quick Location Search Bar -->
+      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+        <input type="text" id="manualLocationSearchInput" class="form-input" placeholder="Search any Indian city, area, or hospital..." onkeydown="if(event.key==='Enter') executeManualLocationSearch()">
+        <button class="btn btn-primary" onclick="executeManualLocationSearch()">Search</button>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="detectLiveGPSLocation(); closeLocationModal();">
+        📡 Detect My Current Live Browser GPS
+      </button>
+
+      <div class="panel-title" style="margin-bottom: 8px;">Pan-India Metro & State Capital Hubs</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 4px;">
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('jaipur_central'); closeLocationModal();">📍 Jaipur Central Command</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('delhi_aiims'); closeLocationModal();">📍 Delhi AIIMS Hub</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('mumbai_bandra'); closeLocationModal();">📍 Mumbai Bandra West</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('bengaluru_mg'); closeLocationModal();">📍 Bengaluru MG Road</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('hyderabad_hitec'); closeLocationModal();">📍 Hyderabad Hitec City</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('chennai_greams'); closeLocationModal();">📍 Chennai Greams Road</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('kolkata_park'); closeLocationModal();">📍 Kolkata Park Street</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('ahmedabad_sg'); closeLocationModal();">📍 Ahmedabad SG Highway</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('pune_shivaji'); closeLocationModal();">📍 Pune Shivaji Nagar</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('lucknow_hazratganj'); closeLocationModal();">📍 Lucknow Hazratganj</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('chandigarh_sec17'); closeLocationModal();">📍 Chandigarh Sector 17</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('guwahati_dispur'); closeLocationModal();">📍 Guwahati Dispur</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('kochi_marine'); closeLocationModal();">📍 Kochi Marine Drive</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('bhopal_mp'); closeLocationModal();">📍 Bhopal MP Nagar</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('patna_gandhi'); closeLocationModal();">📍 Patna Gandhi Maidan</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('bhubaneswar_canteen'); closeLocationModal();">📍 Bhubaneswar Center</button>
+        <button class="btn btn-secondary btn-sm" onclick="setCityPresetLocation('srinagar_lal'); closeLocationModal();">📍 Srinagar Lal Chowk</button>
+      </div>
+
+      <div id="gpsDetectionStatus" style="font-size: 12px; text-align: center; color: var(--text-dim); margin-top: 12px;"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- CREATE INCIDENT MODAL                                    -->
+  <!-- ======================================================== -->
+  <div class="modal-overlay" id="newIncidentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">🚨 Log New Emergency Incident</div>
+        <button class="modal-close" onclick="closeNewIncidentModal()">✕</button>
+      </div>
+      
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Incident Nature / Title *</label>
+        <input type="text" id="modalIncTitle" class="form-input" placeholder="e.g. Pedestrian Hit by Vehicle">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select id="modalIncType" class="form-select">
+            <option value="Trauma">Trauma / Collision</option>
+            <option value="Cardiac">Cardiac / STEMI</option>
+            <option value="Pulmonary">Respiratory Distress</option>
+            <option value="Toxicology">Poisoning / Tox</option>
+            <option value="Pediatric">Pediatric Emergency</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Severity Level *</label>
+          <select id="modalIncSeverity" class="form-select">
+            <option value="critical">Critical (P1 Red)</option>
+            <option value="high">High (P2 Orange)</option>
+            <option value="medium">Medium (P3 Yellow)</option>
+            <option value="low">Low (P4 Green)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Scene Location Address *</label>
+        <input type="text" id="modalIncLocation" class="form-input" placeholder="e.g. Tonk Road Flyover, Sector 5">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label class="form-label">Estimated Patients</label>
+        <input type="number" id="modalIncPatients" class="form-input" value="1" min="1" max="20">
+      </div>
+
+      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeNewIncidentModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitNewIncident()">Submit & Alert Fleet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Application Logic -->
+  <!-- Enterprise Application Script -->
   <script src="app.js"></script>
 </body>
 </html>

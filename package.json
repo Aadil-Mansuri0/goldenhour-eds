@@ -9,7 +9,7 @@
     "test": "node --test tests/unit/services.test.js tests/integration/api.test.js",
     "test:unit": "node --test tests/unit/services.test.js",
     "test:integration": "node --test tests/integration/api.test.js",
-    "lint": "eslint . --ext .js",
+    "lint": "eslint .",
     "migrate": "node scripts/migrate.js",
     "seed": "node scripts/seed.js",
     "docker:up": "docker-compose up --build",

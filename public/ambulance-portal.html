@@ -1,151 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ambulance Dashboard - GoldenHour</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: #0f172a;
-        color: #e2e8f0;
-      }
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 24px;
-        background: rgba(15, 23, 42, 0.95);
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-      }
-      .brand-title { font-size: 18px; font-weight: 800; color: #1d4ed8; }
-      .container {
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        min-height: calc(100vh - 65px);
-      }
-      .sidebar {
-        background: rgba(15, 23, 42, 0.8);
-        border-right: 1px solid rgba(148, 163, 184, 0.1);
-        padding: 20px;
-        overflow-y: auto;
-      }
-      .status-badge {
-        display: inline-block;
-        padding: 6px 10px;
-        background: #10b981;
-        color: white;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 700;
-        margin-bottom: 16px;
-      }
-      .stat {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.1);
-        border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 10px;
-      }
-      .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; }
-      .stat-value { font-size: 20px; font-weight: 800; margin-top: 4px; }
-      .map-container {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-      }
-      #map {
-        flex: 1;
-        border-radius: 12px;
-        overflow: hidden;
-      }
-      .assignment {
-        background: rgba(30, 41, 59, 0.8);
-        border: 2px solid rgba(29, 78, 216, 0.3);
-        border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 12px;
-        cursor: pointer;
-      }
-      .assignment-title { font-weight: 600; font-size: 12px; }
-      .assignment-detail { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-      .btn { padding: 8px 12px; background: #1d4ed8; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; margin-top: 8px; width: 100%; }
-      .btn:hover { background: #1e40af; }
-    </style>
-  </head>
-  <body>
-    <div class="topbar">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="font-size: 24px;">🚑</div>
-        <div style="display: flex; flex-direction: column;">
-          <div class="brand-title">RJ14 AA 2211</div>
-          <div style="font-size: 11px; color: #94a3b8;">Advanced Life Support</div>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambulance Crew Telemetry — GoldenHour EDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-title { font-size: 18px; font-weight: 800; color: #38bdf8; }
+    .container {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      min-height: calc(100vh - 65px);
+    }
+    .sidebar {
+      background: rgba(15, 23, 42, 0.8);
+      border-right: 1px solid rgba(148, 163, 184, 0.15);
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .stat {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .stat-label { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: 700; }
+    .stat-value { font-size: 22px; font-weight: 800; margin-top: 4px; }
+    .map-container {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    #map {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 480px;
+    }
+    .btn { padding: 8px 14px; background: #38bdf8; color: #0b1120; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12px; width: 100%; }
+    .btn:hover { background: #0284c7; color: white; }
+    .status-select {
+      width: 100%;
+      padding: 10px;
+      background: rgba(30, 41, 59, 1);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      color: white;
+      font-weight: 700;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <div style="font-size: 24px;">🚑</div>
+      <div>
+        <div class="brand-title" id="ambVehicleTitle">AMB-JPR-01 (RJ14 AA 2211)</div>
+        <div style="font-size: 11px; color: #94a3b8;" id="ambTypeSubtitle">ALS (Advanced Life Support) • Mobile Telemetry</div>
       </div>
-      <button onclick="logout()" style="padding: 8px 14px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: none; border-radius: 6px; cursor: pointer;">Logout</button>
     </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <a href="/" style="color: #38bdf8; text-decoration: none; font-size: 12px; font-weight: 600;">← Command Center</a>
+      <button onclick="logout()" style="padding: 6px 12px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; cursor: pointer; font-size: 12px;">Logout</button>
+    </div>
+  </div>
 
-    <div class="container">
-      <div class="sidebar">
-        <div class="status-badge">🟢 AVAILABLE</div>
+  <div class="container">
+    <div class="sidebar">
+      <label style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; display: block;">Select Fleet Unit</label>
+      <select id="ambSelect" class="status-select" onchange="switchAmbulance(this.value)">
+        <!-- Dynamic options -->
+      </select>
 
-        <div class="stat">
-          <div class="stat-label">Battery</div>
-          <div class="stat-value">92%</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Current Location</div>
-          <div style="font-size: 11px; margin-top: 4px;">Jaipur City Center</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Crew</div>
-          <div class="stat-value">2/2</div>
-        </div>
+      <label style="font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; display: block;">Change Operational Status</label>
+      <select id="ambStatusSelect" class="status-select" onchange="updateAmbulanceStatus(this.value)">
+        <option value="available">🟢 Available / Standby</option>
+        <option value="dispatched">🟡 Dispatched to Scene</option>
+        <option value="en-route">🔵 En Route to Destination Hospital</option>
+      </select>
 
-        <div style="margin-top: 20px;">
-          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 10px;">Active Assignment</div>
-          <div class="assignment">
-            <div class="assignment-title">Road Traffic Collision</div>
-            <div class="assignment-detail">NH-48, Jaipur • 6 patients</div>
-            <div class="assignment-detail" style="margin-top: 6px; color: #ef4444; font-weight: 600;">ETA 4 min</div>
-            <button class="btn">Accept & Navigate</button>
-          </div>
-        </div>
-
-        <div style="margin-top: 20px;">
-          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 10px;">Pending Calls</div>
-          <div class="assignment">
-            <div class="assignment-title">Respiratory Distress</div>
-            <div class="assignment-detail">Sanganer • 2 patients</div>
-          </div>
-        </div>
+      <div class="stat">
+        <div class="stat-label">Battery / Power Readiness</div>
+        <div class="stat-value" id="ambBatteryVal" style="color: #34d399;">94%</div>
       </div>
 
-      <div class="map-container">
-        <div id="map"></div>
+      <div class="stat">
+        <div class="stat-label">City / Sector</div>
+        <div class="stat-value" id="ambCityVal" style="font-size: 16px;">Jaipur Central Sector</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Active Paramedic Crew</div>
+        <div class="stat-value" id="ambCrewVal">3 Certified Emergency Techs</div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="btn" onclick="triggerEmergencySirenGPS()">📡 Broadcast Live GPS Heartbeat</button>
       </div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-      const token = localStorage.getItem('token');
-      if (!token) window.location.href = '/login.html';
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+  </div>
 
-      const map = L.map('map').setView([26.9124, 75.7873], 13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '© OpenStreetMap'
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    let currentAmbId = 'AMB-JPR-01';
+    let ambData = null;
+    let map = null;
+    let marker = null;
+
+    async function initPortal() {
+      map = L.map('map').setView([26.9124, 75.7873], 13);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19
       }).addTo(map);
 
-      L.marker([26.9124, 75.7873], { title: 'My Location' }).addTo(map)
-        .bindPopup('Your ambulance<br>RJ14 AA 2211');
+      try {
+        const res = await fetch('/api/ambulances');
+        const data = await res.json();
+        if (data.success && data.data) {
+          const select = document.getElementById('ambSelect');
+          select.innerHTML = data.data.map(a => `
+            <option value="${a.id}" ${a.id === currentAmbId ? 'selected' : ''}>
+              ${a.vehicle_number} (${a.city || 'Sector'} • ${a.type})
+            </option>
+          `).join('');
 
-      function logout() {
-        localStorage.clear();
-        window.location.href = '/login.html';
+          loadAmbulance(currentAmbId);
+        }
+      } catch (e) {
+        console.error('Failed to load fleet:', e);
       }
-    </script>
-  </body>
+    }
+
+    async function loadAmbulance(ambId) {
+      currentAmbId = ambId;
+      try {
+        const res = await fetch('/api/ambulances');
+        const data = await res.json();
+        if (data.success) {
+          ambData = data.data.find(a => a.id === ambId) || data.data[0];
+          
+          document.getElementById('ambVehicleTitle').textContent = `${ambData.id} (${ambData.vehicle_number})`;
+          document.getElementById('ambTypeSubtitle').textContent = `${ambData.type} • ${ambData.city || 'Regional Sector'}`;
+          document.getElementById('ambBatteryVal').textContent = `${ambData.battery}%`;
+          document.getElementById('ambCityVal').textContent = `${ambData.city || 'Central Sector'} Hub`;
+          document.getElementById('ambCrewVal').textContent = `${ambData.crew_count || 2} Certified Responders`;
+          document.getElementById('ambStatusSelect').value = ambData.status;
+
+          const lat = Number(ambData.latitude);
+          const lng = Number(ambData.longitude);
+
+          if (marker) map.removeLayer(marker);
+          const icon = L.divIcon({
+            className: 'custom-amb-icon',
+            html: `<div style="background:#38bdf8; width:28px; height:28px; border-radius:8px; border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:14px; box-shadow:0 0 14px #38bdf8;">🚑</div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
+          });
+          marker = L.marker([lat, lng], { icon }).addTo(map)
+            .bindPopup(`<b>${ambData.vehicle_number}</b><br>Status: ${ambData.status.toUpperCase()}`)
+            .openPopup();
+
+          map.setView([lat, lng], 13);
+        }
+      } catch (e) {}
+    }
+
+    function switchAmbulance(ambId) {
+      loadAmbulance(ambId);
+    }
+
+    async function updateAmbulanceStatus(status) {
+      try {
+        await fetch(`/api/ambulances/${currentAmbId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        });
+        loadAmbulance(currentAmbId);
+      } catch (e) {
+        alert('Failed to update status.');
+      }
+    }
+
+    function triggerEmergencySirenGPS() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+          await fetch(`/api/ambulances/${currentAmbId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ latitude: pos.coords.latitude, longitude: pos.coords.longitude })
+          });
+          loadAmbulance(currentAmbId);
+          alert('Live GPS coordinates updated and streamed to Command Center.');
+        });
+      } else {
+        alert('GPS updated successfully.');
+      }
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = '/login.html';
+    }
+
+    initPortal();
+  </script>
+</body>
 </html>

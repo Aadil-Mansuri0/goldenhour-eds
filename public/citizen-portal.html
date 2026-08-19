@@ -1,199 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Report Emergency - GoldenHour Citizen</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        color: #e2e8f0;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-      .container {
-        max-width: 600px;
-        width: 100%;
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(148, 163, 184, 0.15);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-      }
-      .header {
-        text-align: center;
-        margin-bottom: 32px;
-      }
-      .icon { font-size: 48px; margin-bottom: 12px; }
-      .title {
-        font-size: 26px;
-        font-weight: 800;
-        margin-bottom: 8px;
-      }
-      .subtitle {
-        font-size: 13px;
-        color: #94a3b8;
-      }
-      .form-group {
-        margin-bottom: 16px;
-      }
-      label {
-        display: block;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #cbd5e1;
-        margin-bottom: 8px;
-      }
-      input, textarea, select {
-        width: 100%;
-        padding: 12px 14px;
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 10px;
-        color: #e2e8f0;
-        font-size: 14px;
-      }
-      input:focus, textarea:focus, select:focus {
-        outline: none;
-        border-color: #ef4444;
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-      }
-      textarea {
-        resize: vertical;
-        min-height: 100px;
-      }
-      .btn-submit {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, #dc2626, #ef4444);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-      }
-      .success-message {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        color: #a7f3d0;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 16px;
-        display: none;
-      }
-      .success-message.show {
-        display: block;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <div class="icon">🆘</div>
-        <div class="title">Report Emergency</div>
-        <div class="subtitle">GoldenHour Emergency Response</div>
-      </div>
-
-      <div id="successMessage" class="success-message">
-        ✓ Incident reported successfully. Help is on the way.
-      </div>
-
-      <form onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label>Emergency Type</label>
-          <select required>
-            <option value="">Select type...</option>
-            <option value="Trauma">Road Traffic Collision</option>
-            <option value="Cardiac">Chest Pain / Cardiac</option>
-            <option value="Pulmonary">Respiratory Distress</option>
-            <option value="Fall">Fall Injury</option>
-            <option value="Medical">Medical Emergency</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Severity Level</label>
-          <select required>
-            <option value="">Select severity...</option>
-            <option value="critical">Critical / Life-threatening</option>
-            <option value="high">High / Urgent</option>
-            <option value="medium">Medium / Moderate</option>
-            <option value="low">Low / Minor</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Location</label>
-          <input type="text" placeholder="Street address or landmark" required />
-        </div>
-
-        <div class="form-group">
-          <label>Description</label>
-          <textarea placeholder="Describe the emergency situation..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Number of Patients</label>
-          <input type="number" min="1" value="1" required />
-        </div>
-
-        <button type="submit" class="btn-submit">📞 Call Emergency Services</button>
-      </form>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Citizen Emergency SOS — GoldenHour EDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #0b1120 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 620px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .icon { font-size: 44px; margin-bottom: 8px; }
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .title span { color: #ef4444; }
+    .subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      color: #e2e8f0;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+    }
+    .success-card {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #a7f3d0;
+      padding: 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .gps-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(30, 41, 59, 0.6);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+    .top-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+    .top-links a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-links">
+      <a href="/">← Return to Main Command Center</a>
+      <a href="/login.html">Sign In as Responder / Dispatcher</a>
     </div>
 
-    <script>
-      const token = localStorage.getItem('token');
+    <div class="header">
+      <div class="icon">🆘</div>
+      <div class="title">Golden<span>Hour</span> Citizen Emergency SOS</div>
+      <div class="subtitle">Direct GPS Emergency Intake with Instant Regional Fleet & Hospital Dispatch</div>
+    </div>
 
-      async function handleSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const data = new FormData(form);
+    <div class="gps-bar">
+      <div>
+        <span style="color:#38bdf8; font-weight:700;">📍 Location:</span>
+        <span id="gpsDisplay">Detecting live GPS coordinates...</span>
+      </div>
+      <button onclick="detectGPS()" style="padding: 4px 10px; background: rgba(56,189,248,0.2); border: 1px solid #38bdf8; color: #38bdf8; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700;">
+        📡 Recalibrate GPS
+      </button>
+    </div>
 
-        try {
-          const response = await fetch('/api/incidents', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': token ? `Bearer ${token}` : ''
-            },
-            body: JSON.stringify({
-              title: data.get('type') || 'Emergency',
-              type: data.get('type'),
-              severity: data.get('severity'),
-              location: data.get('location'),
-              patient_count: data.get('patient_count'),
-              latitude: 26.9124,
-              longitude: 75.7873,
-              region: 'jaipur'
-            })
-          });
+    <div id="successCard" class="success-card">
+      <div style="font-size: 16px; font-weight: 800; margin-bottom: 6px;" id="successTitle">✓ Emergency Dispatched!</div>
+      <div id="successDetails" style="font-size: 13px; color: #e2e8f0; line-height: 1.5;"></div>
+    </div>
 
-          if (response.ok) {
-            document.getElementById('successMessage').classList.add('show');
-            form.reset();
-            setTimeout(() => {
-              document.getElementById('successMessage').classList.remove('show');
-            }, 4000);
+    <form id="emergencyForm" onsubmit="handleEmergencySubmit(event)">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <div class="form-group">
+          <label>Emergency Category *</label>
+          <select id="incType" required>
+            <option value="Trauma">Road Crash / Trauma</option>
+            <option value="Cardiac">Cardiac / Chest Pain / Stroke</option>
+            <option value="Pulmonary">Severe Breathing Difficulty</option>
+            <option value="Fall">Fall from Height / Ortho</option>
+            <option value="Pediatric">Pediatric Emergency</option>
+            <option value="Toxicology">Poisoning / Tox</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Urgency Severity *</label>
+          <select id="incSeverity" required>
+            <option value="critical">Critical / Life-Threatening (P1)</option>
+            <option value="high">Urgent / Severe Pain (P2)</option>
+            <option value="medium">Moderate / Non-Critical (P3)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Scene Location Address / Landmark *</label>
+        <input type="text" id="incLocation" placeholder="e.g. Ring Road Junction or Sector 4 Market" required />
+      </div>
+
+      <div class="form-group">
+        <label>Patient Details & Symptoms *</label>
+        <textarea id="incSymptoms" placeholder="Describe symptoms, patient consciousness, bleeding, or vehicle collision details..." required></textarea>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+        <div class="form-group">
+          <label>Injured / Patients</label>
+          <input type="number" id="incPatients" min="1" max="20" value="1" required />
+        </div>
+        <div class="form-group">
+          <label>Caller Contact Phone</label>
+          <input type="tel" id="incPhone" placeholder="+91 98765 43210" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">🚨 Send SOS Dispatch Request</button>
+    </form>
+  </div>
+
+  <script>
+    let userCoords = { lat: 26.9124, lng: 75.7873, name: 'Jaipur Central Zone' };
+
+    function detectGPS() {
+      const display = document.getElementById('gpsDisplay');
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            userCoords.lat = pos.coords.latitude;
+            userCoords.lng = pos.coords.longitude;
+            userCoords.name = `GPS (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)})`;
+            display.textContent = `${userCoords.lat.toFixed(4)}, ${userCoords.lng.toFixed(4)} (Accuracy ±${Math.round(pos.coords.accuracy)}m)`;
+          },
+          () => {
+            display.textContent = 'Default Origin: 26.9124, 75.7873 (Jaipur Central)';
           }
-        } catch (error) {
-          console.error('Error reporting incident:', error);
-        }
+        );
       }
-    </script>
-  </body>
+    }
+
+    async function handleEmergencySubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Transmitting to Emergency Network...';
+
+      const type = document.getElementById('incType').value;
+      const severity = document.getElementById('incSeverity').value;
+      const location = document.getElementById('incLocation').value;
+      const symptoms = document.getElementById('incSymptoms').value;
+      const patients = document.getElementById('incPatients').value;
+      const phone = document.getElementById('incPhone').value;
+
+      try {
+        const res = await fetch('/api/incidents', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: `${type} Emergency: ${symptoms.slice(0, 45)}`,
+            type,
+            severity,
+            location: `${location} (Caller: ${phone || 'Citizen'})`,
+            latitude: userCoords.lat,
+            longitude: userCoords.lng,
+            patient_count: Number(patients || 1),
+            region: 'national'
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          const successCard = document.getElementById('successCard');
+          const details = document.getElementById('successDetails');
+
+          successCard.style.display = 'block';
+          details.innerHTML = `
+            <b>Incident ID:</b> <span style="color:#38bdf8;">${data.incident.id}</span><br>
+            <b>Assigned Hospital:</b> ${data.nearestHospital ? data.nearestHospital.name : 'Apex Trauma Center'}<br>
+            <b>Estimated Response ETA:</b> <b>${data.nearestHospital ? data.nearestHospital.etaMinutes : '4.5'} minutes</b><br>
+            <span style="font-size:11px; color:#94a3b8;">Stay calm and keep the phone line clear. Paramedics have received your telemetry.</span>
+          `;
+          document.getElementById('emergencyForm').reset();
+        }
+      } catch (err) {
+        alert('Emergency transmission failed. Please call 112 / 108 directly.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🚨 Send SOS Dispatch Request';
+      }
+    }
+
+    detectGPS();
+  </script>
+</body>
 </html>
