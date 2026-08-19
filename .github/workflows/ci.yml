@@ -34,8 +34,11 @@ jobs:
       - name: Run Test Suite (Unit & Integration)
         run: npm test
 
+      - name: Seed Database
+        run: node scripts/seed.js
+
       - name: Health Check Verification
         run: |
-          npm start &
-          sleep 3
-          curl -f http://localhost:3000/api/health || exit 1
+          PORT=3000 node server.js &
+          sleep 4
+          curl --retry 10 --retry-delay 1 --retry-connrefused -f http://localhost:3000/api/health || exit 1

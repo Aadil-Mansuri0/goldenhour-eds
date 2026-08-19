@@ -14,7 +14,7 @@ function scoreDispatchReadiness(incident = {}, ambulance = {}, hospital = {}) {
   return Math.min(99, Math.max(70, reliability));
 }
 
-function forecastDemand(region = 'national', timeOfDay) {
+function forecastDemand(_region = 'national', timeOfDay) {
   const hour = Number(timeOfDay !== undefined ? timeOfDay : new Date().getHours());
   const peak = (hour >= 8 && hour <= 11) ? 22 : (hour >= 17 && hour <= 21) ? 18 : 6;
   return Math.min(98, 55 + peak);

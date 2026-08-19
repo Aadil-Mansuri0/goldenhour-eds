@@ -52,7 +52,7 @@ async function addColumnIfNotExists(table, column, definition) {
     if (!exists) {
       await run(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
     }
-  } catch (err) {
+  } catch (_err) {
     // ignore if table doesn't exist yet
   }
 }

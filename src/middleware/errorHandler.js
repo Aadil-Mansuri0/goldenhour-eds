@@ -7,7 +7,7 @@ function notFoundHandler(req, res) {
   });
 }
 
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res, _next) {
   logger.error('Unhandled application error', {
     stack: err?.stack,
     message: err?.message,
