@@ -175,7 +175,7 @@ async function initializeDatabase() {
     for (const u of defaultUsers) {
       const hash = bcrypt.hashSync(u.pass, 10);
       await run(`
-        INSERT INTO users (id, username, password_hash, name, role, hospital_id, ambulance_id, created_at)
+        INSERT OR IGNORE INTO users (id, username, password_hash, name, role, hospital_id, ambulance_id, created_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `, [u.id, u.username, hash, u.name, u.role, u.hospital_id || null, u.ambulance_id || null, new Date().toISOString()]);
     }
@@ -255,7 +255,7 @@ async function initializeDatabase() {
 
     for (const h of PAN_INDIA_HOSPITALS) {
       await run(`
-        INSERT INTO hospitals (
+        INSERT OR REPLACE INTO hospitals (
           id, name, type, address, phone, latitude, longitude, region, state, city, pincode,
           capacity, available_beds, trauma_level, specialty, eta_minutes, data_source, last_updated, data_confidence
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -311,7 +311,7 @@ async function initializeDatabase() {
 
     for (const amb of PAN_INDIA_AMBULANCES) {
       await run(`
-        INSERT INTO ambulances (id, vehicle_number, type, status, latitude, longitude, region, city, battery, crew_count, eta_minutes, last_updated)
+        INSERT OR REPLACE INTO ambulances (id, vehicle_number, type, status, latitude, longitude, region, city, battery, crew_count, eta_minutes, last_updated)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, amb);
     }
@@ -329,7 +329,7 @@ async function initializeDatabase() {
 
     for (const inc of defaultIncidents) {
       await run(`
-        INSERT INTO incidents (id, title, type, severity, status, location, latitude, longitude, region, city, patient_count, eta_minutes, created_at, updated_at)
+        INSERT OR REPLACE INTO incidents (id, title, type, severity, status, location, latitude, longitude, region, city, patient_count, eta_minutes, created_at, updated_at)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, inc);
     }
@@ -339,7 +339,7 @@ async function initializeDatabase() {
   const auditCount = await get('SELECT COUNT(*) AS count FROM audit_logs');
   if ((auditCount?.count || 0) === 0) {
     await run(`
-      INSERT INTO audit_logs (id, actor, action, category, details, timestamp)
+      INSERT OR IGNORE INTO audit_logs (id, actor, action, category, details, timestamp)
       VALUES
       ('LOG-100001', 'SYSTEM_BOOT', 'PLATFORM_INITIALIZATION', 'SYSTEM', 'GoldenHour India-Wide Emergency Dispatch Platform Initialized', '2026-08-19T07:55:00Z'),
       ('LOG-100002', 'DISPATCHER', 'DISPATCHED AMB-JPR-03 -> INC-1001', 'DISPATCH', 'Assigned SMS Super Specialty Trauma Hospital | ETA: 4.5m', '2026-08-19T08:03:00Z')

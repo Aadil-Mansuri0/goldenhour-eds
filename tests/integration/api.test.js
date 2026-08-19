@@ -23,9 +23,9 @@ test.before(async () => {
 });
 
 test.after(async () => {
-  await new Promise((resolve, reject) => {
-    server.close((err) => (err ? reject(err) : resolve()));
-  });
+  if (server) {
+    await new Promise((resolve) => server.close(resolve));
+  }
   await closeDatabase();
 });
 
